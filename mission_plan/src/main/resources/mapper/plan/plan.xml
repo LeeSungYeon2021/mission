@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+						"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="wemb.mission.plan.dao.PlanDao">
+
+	<!-- 일정 등록 -->
+	<insert id="planInsert"
+		parameterType="wemb.mission.plan.vo.Plan">
+		INSERT INTO TB_PLAN
+		VALUES(PLAN_SEQ.NEXTVAL,SYSDATE,#{plan_startDate},#{plan_endDate},SYSDATE,#{plan_title},#{plan_content},#{plan_select})
+	</insert>
+
+	<!-- 해당 월 일정 조회 -->
+	<select id="planSelect" resultType="wemb.mission.plan.vo.Plan">
+		SELECT * FROM TB_PLAN WHERE PLAN_STARTDATE LIKE '%'||#{subDay}||'%'
+	</select>
+
+	<!-- 일정 카운트 조회 -->
+	<select id="planCount"
+		resultType="wemb.mission.plan.vo.PlanCount">
+		SELECT A.*,B.MONTHCOUNT FROM 
+			(SELECT PLAN_STARTDATE,COUNT(*) AS DAYCOUNT FROM TB_PLAN WHERE PLAN_STARTDATE LIKE '%'||#{subDay}||'%' GROUP BY PLAN_STARTDATE) A,
+			(SELECT COUNT(*)AS MONTHCOUNT FROM TB_PLAN WHERE PLAN_STARTDATE LIKE '%'||#{subDay}||'%') B
+	</select>
+</mapper>
