@@ -43,8 +43,8 @@ function dateInput(data, btnDate) {
 
 //달력 화면 생성
 function calendar() {
-
-	$("#body_table tbody").children().remove();
+	
+	$("#tbl_plan tbody").children().remove();
 
 	firstDay = new Date(date.getFullYear(), date.getMonth(), 1).getDay();
 	lastDay = new Date(currentYear, currentMonth, 0).getDate();
@@ -126,7 +126,7 @@ function calendar() {
 			count = 1;
 		}
 		tr.append(td);
-		$("#body_table tbody").append(tr);	
+		$("#tbl_plan tbody").append(tr);	
 	}
 
 }
@@ -134,6 +134,7 @@ function calendar() {
 //달별,일별 일정 개수 조회
 function planCount() {
 	var countDate = currentYear + '/' + '0' + currentMonth;
+	console.log('카',currentYear);
 	
 	$.ajax({
 		url: '/plan_count',
@@ -144,9 +145,9 @@ function planCount() {
 			console.log('카운트데이터',data[0]);
 			
 			$("#plan_countAll").html('전체일정 (' + data[0].monthCount + '개)');
-			console.log('자름',(data[0].plan_startDate).substr(0,10));
+			console.log('자름',(data[0].plan_start_date).substr(0,10));
 			for(let i=0;i<data.length ;i++) {
-				let subDay = data[i].plan_startDate.substr(0,10);
+				let subDay = data[i].plan_start_date.substr(0,10);
 				
 				$(".planCountInput").each(function(idx) {
 					var self = $(this);
@@ -176,38 +177,42 @@ function selectPlan() {
 		data: {day : dayData},
 		success: function(data) {
 
-			console.log(data);			
+			console.log('셀렉',data);
+			console.log('셀렉',data.length);			
 			
 			for (let i = 0; i < data.length; i++) {
 
-				let full = data[i].plan_startDate;
+				let full = data[i].plan_start_date;
 				let year = full.substring(0, 4);
 				
 				let month = full.substring(6, 7);
 				let days = full.substring(8, 10);
 				let dayStr = year + '-0' + month + '-' + days;
 				let str = "Y";
-				
+				console.log('dayStr',dayStr);
 				$("input[name=fullDay]").each(function(idx) {
 					var self = $(this);
 
 					var hiddenVal = $(this).val();
-
+					if(dayStr.trim() == '2021-05-24') {
+						console.log('히든발',i);
+					}
 					if (hiddenVal === dayStr) {
 						
 						var li = $("<li>");
-
-						if ((data[i].plan_select).trim() === 'Y') {
-							li.addClass('list-group-item list-group-item-danger');
+						var div = $("<div>").addClass("divv");
+						
+						if ((data[i].plan_state).trim() === 'Y') {
+							li.addClass('list-group-item list-group-item-danger');							
 
 						} else {
 							li.addClass('list-group-item');
 						}
 						
-						li.append(data[i].plan_title);
+						li.append(data[i].plan_title).append(div);
 											
-						self.next().next().append(li);
-					}
+						self.next().next().append(li);						
+					}					
 				})
 			}
 
@@ -229,6 +234,7 @@ $("#prevBtn").on('click', function() {
 	dateInput('P', fullDate);
 	calendar();
 	selectPlan();
+	planCount();
 });
 
 //다음달 버튼
@@ -244,6 +250,7 @@ $("#nextBtn").on('click', function() {
 	dateInput('P', fullDate);
 	calendar();
 	selectPlan();
+	planCount();
 });
 
 //일정등록 modal
@@ -254,13 +261,31 @@ $(document).on('click', '.inputDay', function(e) {
 	var target = $(e.target);
 	
 	//현재 날짜 입력
-	$("#plan_startDate").val(target.next().val());
+	$("#plan_start_date").val(target.next().val());
 });
 
-$("#plan_startDate").on('change',function(e) {
+$("#plan_start_date").on('change',function(e) {
 	let tt = $(e.target).val();
 	let ttt = $(".hiddenDay_"+currentDay).val();	
 })
 
+$("#enrollBtn").click(function() {
+	console.log('자료형',typeof($("#plan_end_date").val()));
+	var ss = new Date($("#plan_end_date").val());
+	console.log('데이트',ss.getHours());
+})
 
-
+/*$(document).on('click', '.list-group-item', function(e) {
+	console.log(">???",$(e.target));
+	$(".divv").dialog({		
+		buttons : {
+			"span" : function() {$(this).dialog('close');}
+		},
+		title:'dialog 창',
+		width: 300
+	});
+	var span = $("<span>").addClass('ttt').html("span");
+	$(e.target).append(span);
+	console.log('dsfsdfs',$(".ui-dialog-titlebar-close"));
+	$(".ui-dialog-titlebar-close").append($("<span>").html('x'));
+})*/

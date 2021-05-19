@@ -1,69 +1,51 @@
-table {
+#tbl_plan {
 	width: 100%;
+	border:none;
 }
 
-#header_tbl>thead>tr>th {
-	text-align: center;
+#tbl_plan > thead > tr > td {
+	border:none;
+	width : 160px;
 }
 
-#header_tbl span {
-	margin-left: 950px;
-}
-
-#header_tbl {
-	color: black;
-}
-
-#header_tbl button {
-	color: black;
-	background-color: white;
+#tbl_plan > thead > tr > td > input{
 	border: none;
+	width:70px;
+	display:inline;
+	font-size:20px;		
+	/* font-weight:bold; */
 }
 
-#header_tbl input {
-	color: black;
-	border: none;
-	font-size: 30px;
-	width: 100px;
+#tbl_plan > thead > tr > td > button{
+	border: none;		
+	background-color : white;	
 }
 
-#body_table {
-	border: 1px solid black;
-}
-
-#body_table>thead {
-	border: none;
-}
-
-#body_table input {
-	border: none;
-}
-
-/* #body_day {
-	width:30px;
-} */
-#body_table>tbody>tr>td {
-	width: 180px;
+#tbl_plan > tbody > tr > td {
+	width :180px;
 	height:130px;
 }
 
-#body_table>tbody>tr>td>input {
-	width: 65px;
-	background-color: white;
+#tbl_plan > tbody > tr > td > input{
+	border: none;		
+	width:55px;	
 }
 
-#body_table>tbody>tr>td>ul {
+#tbl_plan > tbody > tr > td > ul {
 	margin-top: 10px;
 }
 
-#body_table>tbody>tr>td>ul>li {
+#tbl_plan > tbody > tr > td > ul > li {
 	border-top: none;
 	border-left: none;
 	border-right: none;
 	font-size: 10px;
 	padding: 0px;
-}
+} 
 
+#plan_countAll {
+	font-weight:bold;
+}
 .modal-body #plan-title {
 	border-top: none;
 	border-left: none;

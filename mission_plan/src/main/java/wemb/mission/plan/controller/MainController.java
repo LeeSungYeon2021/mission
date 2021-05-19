@@ -22,7 +22,13 @@ public class MainController {
 
 	@Autowired
 	private PlanService planService;
+	
+	@RequestMapping(value = "/test")
+	public String test() {
 
+		return "test";
+	}
+	
 	@RequestMapping(value = "/main")
 	public String index() {
 
@@ -58,10 +64,10 @@ public class MainController {
 	// 일정 등록
 	@RequestMapping(value = "/plan_enroll",method=RequestMethod.POST)
 	public RedirectView planEnroll(Plan plan) {
-		if (plan.getPlan_select().equals("일반")) {
-			plan.setPlan_select("N");
+		if (plan.getPlan_state().equals("일반")) {
+			plan.setPlan_state("N");
 		}else { 
-			plan.setPlan_select("Y");
+			plan.setPlan_state("Y");
 		}
 		int result = planService.planInsert(plan);
 		

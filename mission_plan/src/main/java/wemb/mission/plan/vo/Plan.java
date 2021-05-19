@@ -9,13 +9,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Plan {
 
-	private int plan_no;
-	private String plan_enrollDate;
-	private String plan_startDate;
-	private String plan_endDate;
-	private String plan_updateDate;
+	private int plan_seq_no;
+	private String plan_enroll_date;
+	private String plan_start_date;
+	private String plan_end_date;
+	private String plan_update_date;
 	private String plan_title;
 	private String plan_content;
-	private String plan_select;			
+	private String plan_state;			
 	
 }
