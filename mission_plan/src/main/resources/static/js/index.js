@@ -22,7 +22,6 @@ var arrayObj = [];
 var firstDay;
 
 //매달 마지막 날짜
-
 var lastDay;
 
 //현재 년월일 표시
@@ -37,8 +36,7 @@ function dateInput(data, btnDate) {
 	currentYear = date.getFullYear();
 	currentMonth = date.getMonth() + 1;
 	currentDay = date.getDate();
-	console.log('일 ', currentDay);
-	console.log('ㅇㅁㅅㄷ', date);
+
 	$("#currentYear").val(currentYear + '년');
 	$("#currentMonth").val(currentMonth + '월');
 
@@ -51,7 +49,9 @@ function calendar() {
 
 	firstDay = new Date(date.getFullYear(), date.getMonth(), 1).getDay();
 	lastDay = new Date(currentYear, currentMonth, 0).getDate();
-
+	var dd = new Date ();
+	
+	console.log('모먼',moment(4).date(1).day());
 	for (let i = 0; i < firstDay + lastDay; i++) {
 
 		//매주 tr 생성
@@ -138,14 +138,14 @@ function calendar() {
 function planCount() {
 	var countDate = currentYear + '/' + '0' + currentMonth;
 
-
+	console.log('dsf?sfsdfs');
 	$.ajax({
 		url: '/plan_count',
 		datatype: 'json',
 		method: 'post',
 		data: { day: countDate },
 		success: function(data) {
-
+			console.log('datsss', data);
 			if (data[0].monthCount == 0) {
 				$("#plan_countAll").html('전체일정 (없음)');
 			} else {
@@ -153,6 +153,7 @@ function planCount() {
 			}
 
 			for (let i = 0; i < data.length; i++) {
+
 				let subDay = data[i].plan_start_date.substr(0, 10);
 
 				$(".planCountInput").each(function(idx) {
@@ -173,7 +174,11 @@ function planCount() {
 }
 //현재 월 전체 일정 조회
 function selectPlan() {
+
 	$("#tbl_plan tbody").children().children().children().children().remove();
+	$("#planView_footer").children().remove();
+	$("#planView_body").children().remove();
+
 	var dayData = currentYear + '/' + '0' + currentMonth;
 	var tsts = [];
 	$.ajax({
@@ -182,17 +187,7 @@ function selectPlan() {
 		method: 'post',
 		data: { day: dayData },
 		success: function(data) {
-
-			/*		for (let i = 0  i < data.length ; i++) {
-				arrayObj.push(data[i]);
-			}*/
-
-
-
-			console.log('tsts', arrayObj);
-
-			console.log('셀렉', data);
-			console.log('셀렉', data.length);
+			console.log('spannn', data);
 
 			for (let i = 0; i < data.length; i++) {
 				let span = $("<span>").html(data[i].plan_title).addClass('form-control');
@@ -274,44 +269,47 @@ $("#nextBtn").on('click', function() {
 
 //일정등록 modal
 $(document).on('click', '.inputDay', function(e) {
+	console.log('좌표',  e.pageX);
+	console.log('ddd', typeof (e.offsetX));
+	$("#plan_modal").css({
+		"top": '250px',
+		"left": '700px',
+	})
+	$("#enrollBtn").show();
 	$("#updateBtn").hide();
 	$("#deleteBtn").hide();
 	$("#updateEndBtn").hide();
-	$(".modal-title").html('일정 등록');
+	$("#plan_modal .modal-title").html('일정 등록');
 	$("#plan_state").val('N').removeAttr('disabled', 'false');
 	$("#plan_start_date").val('').removeAttr('disabled', 'false');
 	$("#plan_end_date").val('').removeAttr('disabled', 'false');
 	$("#plan_title").val('').removeAttr('disabled', 'false');
 	$("#plan_content").html('').removeAttr('disabled', 'false');
-	$(".modal").modal('show');
+	$("#plan_modal").modal('show');
 	$('.modal-backdrop').remove();
-	$('.modal').draggable({ handle: ".modal-header" });
+	$('#plan_modal').draggable({ handle: "#plan_modal_header" });
 	var target = $(e.target);
 	//현재 날짜 입력
 	$("#plan_start_date").val(target.next().val());
 });
 
-$("#plan_start_date").on('change', function(e) {
-	let tt = $(e.target).val();
-	let ttt = $(".hiddenDay_" + currentDay).val();
-})
-
 $("#enrollBtn").click(function() {
 	let ajaxData = $("#plan_form").serialize();
-	$(".modal").modal('hide');
+	$("#plan_modal").modal('hide');
 	$.ajax({
 		url: '/plan_enroll',
 		type: 'post',
 		data: ajaxData,
 		success: function(data) {
 			selectPlan();
+			planCount();
 		}
 	})
 });
 
 $("#updateEndBtn").click(function() {
 	let ajaxData = $("#plan_form").serialize();
-	$(".modal").modal('hide');
+	$("#plan_modal").modal('hide');
 	$.ajax({
 		url: '/plan_update',
 		type: 'post',
@@ -335,7 +333,12 @@ $(document).on('click', '.list-group-item', function(e) {
 				'value': data.plan_seq_no,
 				'name': 'plan_seq_no',
 			})
-			$(".modal-title").html('일정 상세보기');
+/*
+			$("#plan_modal").css({
+				"top":  (e.pageX/2) + 'px',
+				"left":'-' + (e.pageY) + 'px',
+			})*/
+			$("#plan_modal .modal-title").html('일정 상세보기');
 			$("#plan_state").val(data.plan_state.trim()).prop("selected", "true").attr('disabled', 'true');
 			$("#plan_start_date").val(data.plan_start_date.substr(0, 10)).attr('disabled', 'true');
 			$("#plan_end_date").val(data.plan_end_date.substr(0, 10)).attr('disabled', 'true');
@@ -346,9 +349,9 @@ $(document).on('click', '.list-group-item', function(e) {
 			$("#updateEndBtn").hide();
 			$("#updateBtn").show();
 			$("#deleteBtn").show();
-			$(".modal").modal('show');
+			$("#plan_modal").modal('show');
 			$('.modal-backdrop').remove();
-			$('.modal').draggable({ handle: ".modal-header" });
+			$('#plan_modal').draggable({ handle: "#plan_modal_header" });
 		}
 	})
 
@@ -358,7 +361,7 @@ $(document).on('click', '.list-group-item', function(e) {
 
 $("#updateBtn").click(function() {
 
-	$(".modal-title").html('일정 수정');
+	$("#plan_modal .modal-title").html('일정 수정');
 	$("#plan_state").removeAttr('disabled', 'false');
 	$("#plan_start_date").removeAttr('disabled', 'false');
 	$("#plan_end_date").removeAttr('disabled', 'false');
@@ -367,10 +370,10 @@ $("#updateBtn").click(function() {
 	$("#enrollBtn").hide();
 	$("#updateEndBtn").show();
 	$("#updateBtn").hide();
-	$("#deleteBtn").hide();	
-	$(".modal").modal('show');
+	$("#deleteBtn").hide();
+	$("#plan_modal").modal('show');
 	$('.modal-backdrop').remove();
-	$('.modal').draggable({ handle: ".modal-header" });
+	$('#plan_modal').draggable({ handle: "#plan_modal_header" });
 
 })
 
@@ -386,20 +389,20 @@ $("#deleteBtn").click(function() {
 			data: { no: $("input[name=plan_seq_no]").val() },
 			success: function(data) {
 
-				$(".modal").modal('hide');
+				$("#plan_modal").modal('hide');
 				selectPlan();
-
+				planCount();
 			}
 		})
 	}
 });
 
 $("#plan_countAll").click(function() {
-$("#planView_modal").css({
-	"top": '27px',
-	"left": '700px'
-})
+	$("#planView_modal").css({
+		"top": '27px',
+		"left": '700px'
+	})
 	$("#planView_modal").modal();
 	$('.modal-backdrop').remove();
-	/*$('.modal').draggable({ handle: "#planView_header" });*/
+	$('#planView_modal').draggable({ handle: "#planView_header" });
 })

@@ -1,6 +1,8 @@
 package wemb.mission.plan.controller;
 
-import java.util.ArrayList;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -10,7 +12,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.view.RedirectView;
 
 import wemb.mission.plan.service.PlanService;
 import wemb.mission.plan.vo.Plan;
@@ -23,12 +24,6 @@ public class MainController {
 
 	@Autowired
 	private PlanService planService;
-
-	@RequestMapping(value = "/test")
-	public String test() {
-
-		return "test";
-	}
 
 	@RequestMapping(value = "/main")
 	public String index() {
@@ -76,6 +71,7 @@ public class MainController {
 	@ResponseBody
 	public String planEnroll(Plan plan) {
 		String msg = "";
+	
 		int result = planService.planInsert(plan);
 		if(result != 0) {
 			msg = "등록 되었습니다.";

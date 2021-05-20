@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <link rel="stylesheet" type="text/css" href="/resources/css/index.css">
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
 <%@ include file="/WEB-INF/view/common/header.jsp"%>
 <section>
 	<div class="container">
@@ -77,10 +77,10 @@
 		
 		<!-- 일정 modal -->
 		<form id="plan_form" method="post">
-			<div class="modal" tabindex="-1" role="dialog">
+			<div class="modal" id="plan_modal" tabindex="-1" role="dialog">
 				<div class="modal-dialog" role="document">
 					<div class="modal-content">
-						<div class="modal-header">
+						<div class="modal-header" id="plan_modal_header">
 							<h5 class="modal-title">일정 등록</h5>
 							<button type="button" class="close" data-dismiss="modal"
 								aria-label="Close">
