@@ -33,5 +33,5 @@
 </head>
 <body>
 	<header>
-		<h2>1차 과제 - 일정표 구현</h2>
+		
 	</header>

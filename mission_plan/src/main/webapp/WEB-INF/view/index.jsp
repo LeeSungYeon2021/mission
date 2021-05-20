@@ -7,7 +7,7 @@
 <%@ include file="/WEB-INF/view/common/header.jsp"%>
 <section>
 	<div class="container">
- 
+
 		<table class="table " id="tbl_plan">
 			<thead>
 				<tr>
@@ -18,11 +18,9 @@
 							<i class="fa fa-angle-left fa-2x"></i>
 						</button>
 					</td>
-					<td align='center'> 
-						<input type="text" id="currentYear" readonly> 						
-					</td>
-					<td align='left'> 						
-						<input type="text" id="currentMonth" readonly>
+					<td align='center'><input type="text" id="currentYear"
+						readonly></td>
+					<td align='left'><input type="text" id="currentMonth" readonly>
 					</td>
 					<td align='left'>
 						<button type="button" id="nextBtn">
@@ -45,24 +43,40 @@
 
 				</tr>
 				<tr>
-					<td style="color:red;">일</td>
+					<td style="color: red;">일</td>
 					<td>월</td>
 					<td>화</td>
 					<td>수</td>
 					<td>목</td>
 					<td>금</td>
-					<td style="color:blue;">토</td>
+					<td style="color: blue;">토</td>
 				</tr>
 			</thead>
 
 			<tbody>
-				
-			</tbody>			
-		</table>					
 
-
+			</tbody>
+		</table>
+		
+		<!-- 일정상세 modal -->
+	<div class="modal" id="planView_modal" tabindex="-1" role="dialog">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content1">
+						<div class="modal-header" id="planView_header">
+							<h5>전체 일정</h5>
+						<button type="button" class="close" data-dismiss="modal1"
+							aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>						
+					</div>
+					<div class="modal-body" id="planView_body"></div>
+					<div class="modal_footer" id="planView_footer"></div>
+				</div>
+			</div>
+		</div>		
+		
 		<!-- 일정 modal -->
-		<form action="${path }/plan_enroll" method="post">
+		<form id="plan_form" method="post">
 			<div class="modal" tabindex="-1" role="dialog">
 				<div class="modal-dialog" role="document">
 					<div class="modal-content">
@@ -76,8 +90,8 @@
 						<div class="modal-body">
 							<div>
 								<span>구분</span> <select id="plan_state" name="plan_state">
-									<option value="일반">일반</option>
-									<option value="중요">중요</option>
+									<option value="N">일반</option>
+									<option value="Y">중요</option>
 								</select>
 							</div>
 							<div>
@@ -85,16 +99,27 @@
 								<input id="plan_end_date" type="date" name="plan_end_date">
 							</div>
 							<div>
-								<input name="plan_title" class="form-conrol" id="plan-title"
+								<input name="plan_title" class="form-conrol" id="plan_title"
 									type="text" placeholder="일정 제목을 입력해주세요"> <br /> <br />
 							</div>
-							<div id="plan_content">
-								<textarea name="plan_content"></textarea>
+							<div>
+								<textarea id="plan_content" name="plan_content"></textarea>
 							</div>
 						</div>
 						<div class="modal-footer">
 							<!-- <button id="enrollBtn" type="submit" class="btn btn-primary">등록</button> -->
-							<button id="enrollBtn" type="button" class="btn btn-primary">등록</button>
+							<input type="button" id="enrollBtn" value="저장">
+							<!-- <input type="button" id="updateBtn" value="수정"> -->
+							<button type="button" id="updateBtn">
+								<i class="fas fa-pen"></i>
+							</button>
+							<input type="button" id="updateEndBtn" value="저장">
+							
+							<button type="button" id="deleteBtn">
+								<i class="fas fa-trash-alt"></i>
+							</button>
+							
+							<!-- <button id="enrollBtn" type="button" class="btn btn-primary">등록</button> -->
 						</div>
 					</div>
 				</div>

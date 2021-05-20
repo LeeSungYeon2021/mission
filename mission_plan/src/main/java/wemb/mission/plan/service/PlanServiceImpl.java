@@ -32,6 +32,27 @@ public class PlanServiceImpl implements PlanService {
 		// TODO Auto-generated method stub
 		return planDao.planCount(subDay);
 	}
+
+	@Override
+	public Plan planView(int no) {
+		// TODO Auto-generated method stub
+		return planDao.planView(no);
+	}
+
+	@Override
+	public int planUpdate(Plan plan) {
+		// TODO Auto-generated method stub
+		return planDao.planUpdate(plan);
+	}
+
+	@Override
+	public int planDelete(int no) {
+		// TODO Auto-generated method stub
+		return planDao.planDelete(no);
+	}
+	
+	
+	
 	
 	
 	

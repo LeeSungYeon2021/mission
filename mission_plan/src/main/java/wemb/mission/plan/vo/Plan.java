@@ -1,5 +1,7 @@
 package wemb.mission.plan.vo;
 
+import java.util.Date;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,7 +12,7 @@ import lombok.NoArgsConstructor;
 public class Plan {
 
 	private int plan_seq_no;
-	private String plan_enroll_date;
+	private Date plan_enroll_date;
 	private String plan_start_date;
 	private String plan_end_date;
 	private String plan_update_date;
