@@ -30,7 +30,12 @@ public class MainController {
 
 		return "index";
 	}
+	@RequestMapping(value = "/test")
+	public String test() {
 
+		return "test";
+	}
+	
 	// 일정 카운트
 	@RequestMapping(value = "/plan_count", method = RequestMethod.POST)
 	@ResponseBody

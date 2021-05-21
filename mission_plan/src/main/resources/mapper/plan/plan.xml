@@ -14,8 +14,8 @@
 
 	<!-- 해당 월 일정 조회 -->
 	<select id="planSelect" resultType="wemb.mission.plan.vo.Plan">		
-		
-		SELECT * FROM TB_PLAN WHERE PLAN_START_DATE LIKE '%'||#{SUBDAY}||'%' ORDER BY (CASE WHEN PLAN_STATE = 'Y' THEN 1 ELSE 2 END ),PLAN_ENROLL_DATE ASC  
+		SELECT * FROM TB_PLAN WHERE PLAN_START_DATE LIKE '%'||#{SUBDAY}||'%'  ORDER BY PLAN_START_DATE, (CASE WHEN PLAN_STATE = 'Y' THEN 0 ELSE 1 END),PLAN_ENROLL_DATE ASC
+		<!-- SELECT * FROM TB_PLAN WHERE PLAN_START_DATE LIKE '%'||#{SUBDAY}||'%' ORDER BY (CASE WHEN PLAN_STATE = 'Y' THEN 1 ELSE 2 END ),PLAN_ENROLL_DATE ASC -->  
 	</select>
 
 	<!-- 일정 카운트 조회 -->
@@ -26,15 +26,18 @@
 			(SELECT COUNT(*)AS MONTHCOUNT FROM TB_PLAN WHERE PLAN_START_DATE LIKE '%'||#{SUBDAY}||'%') B
 	</select>
 	
+	<!-- 일정 상세보기 -->
 	<select id="planView" parameterType="_int" resultType="wemb.mission.plan.vo.Plan">
 		SELECT * FROM TB_PLAN WHERE PLAN_SEQ_NO = #{no}
 	</select>
 	
+	<!-- 일정 수정 -->
 	<update id="planUpdate" parameterType="wemb.mission.plan.vo.Plan">
 		UPDATE TB_PLAN SET PLAN_START_DATE = #{plan_start_date} , PLAN_END_DATE = #{plan_end_date} , PLAN_UPDATE_DATE = SYSDATE , PLAN_TITLE = #{plan_title} ,
 		PLAN_CONTENT = #{plan_content} , PLAN_STATE = #{plan_state} WHERE PLAN_SEQ_NO = #{plan_seq_no}
 	</update>
 	
+	<!-- 일정 삭제 -->
 	<delete id="planDelete" parameterType="_int">
 		DELETE FROM TB_PLAN WHERE PLAN_SEQ_NO = #{plan_seq_no}
 	</delete>

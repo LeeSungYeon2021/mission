@@ -47,21 +47,42 @@
 	font-weight:bold;
 }
 
-.modal-body #plan_title {
+/* .modal-body #plan_title {
 	border-top: none;
 	border-left: none;
 	border-right: none;
 	border-bottom: 1px solid black;
 	width: 100%;
-}
+} */
 
 .modal-body textarea {
-	border: 1px solid gray;
+	border: 1px solid lightgray;
 	background-color: white;
 	width: 100%;
-	height: 200px;
+	height: 300px;
 }
 
+.modal-header button {
+	border:none;
+	background-color:white;
+}
+
+.plan_date {
+	width:130px;
+	display : inline;
+}
 .planView_modal {
 	border:none;
 }
+
+#updateBtn{
+	margin-left:250px;
+}
+
+#plan_state ,#plan_title ,#plan_content, #plan_start_date,#plan_end_date{
+	background-color:white;
+}
+
+
+
+
