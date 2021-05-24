@@ -40,12 +40,11 @@ public class MainController {
 	@RequestMapping(value = "/plan_count", method = RequestMethod.POST)
 	@ResponseBody
 	public List<PlanCount> planCount(String day) {
-
-		log.info("카운트 : {} ", day);
+		
 		String subDay = day.substring(2);
 		PlanCount pc = new PlanCount("null",0,0);
 		List<PlanCount> list = planService.planCount(subDay);
-		log.info("리스트 렝스 : {}",list.size());
+		
 		if (list.size() == 0) {
 			
 			list.add(pc);
@@ -58,15 +57,11 @@ public class MainController {
 	@RequestMapping(value = "/plan_select", method = RequestMethod.POST)
 	@ResponseBody
 	public List<Plan> planSelect(String day) {
-
-		log.info("day : {} ", day);
+		
 		String subDay = day.substring(2);
-		log.info("subDay : {} ", subDay);
+		
 		List<Plan> list = planService.planSelect(subDay);
 
-		for (Plan p : list) {
-			log.info("P : {} ", p);
-		}
 		return list;
 
 	}
@@ -97,6 +92,7 @@ public class MainController {
 			}else {
 				msg = "등록에 실패하였습니다.";
 			}
+		 		 
 		 return msg;
 	}
 	
@@ -104,7 +100,7 @@ public class MainController {
 		@RequestMapping(value = "/plan_delete", method = RequestMethod.POST)
 		@ResponseBody
 		public String planDelete(int no) {
-			log.info("들어왔니 : {} ",no);
+			
 			String msg ="";
 			  int result = planService.planDelete(no);
 			  
@@ -120,8 +116,7 @@ public class MainController {
 	// 일정 상세보기
 	@RequestMapping(value = "/plan_view", method = RequestMethod.POST)
 	@ResponseBody
-	public Plan planEnroll(int no) {
-		log.info("no : {} ",no);
+	public Plan planEnroll(int no) {		
 		
 		Plan p = planService.planView(no);
 		

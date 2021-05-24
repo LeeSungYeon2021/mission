@@ -17,6 +17,7 @@ var currentYear;
 var currentMonth;
 var currentDay;
 var today;
+var arr = {};
 
 //매달 1일 요일
 var firstDay;
@@ -57,7 +58,7 @@ function dateInput(data, btnDate) {
 function calendar() {
 
 	$("#tbl_plan tbody").children().remove();
-
+	/*$("#dayDiv").hide();*/
 	for (let i = 0; i < firstDay + lastDay; i++) {
 
 		//매주 tr 생성
@@ -112,14 +113,19 @@ function calendar() {
 			//전체 일정 개수 표출 input
 			let planCountInput = $("<span>");
 			planCountInput.attr({
-				'class': 'planCountInput',
+				'class': 'planCountInput dropdown',
 				/*	'type': 'text',*/
 				'readonly': 'true',
+				'data-toggle': 'dropdown'
+
 			}).css({
 				'text-align': 'right',
-				'font-size': '10px'
+				'font-size': '10px',
+				'margin-left': '70px'
 			});
 
+			let div = $("<div>");
+			div.attr('class', 'dropdown-menu');
 			let ul = $("<ul>");
 			ul.addClass('list-group');
 			td.addClass('tdDay_' + count)
@@ -127,6 +133,8 @@ function calendar() {
 			td.append(dayHidden);
 			td.append(planCountInput);
 			td.append(ul);
+			td.append(div);
+
 			count++;
 
 
@@ -200,7 +208,23 @@ function selectPlan() {
 
 			for (let i = 0; i < data.length; i++) {
 
-				let span = $("<span>").html(data[i].plan_title).addClass('form-control');
+				arr[i] = new Object();
+				arr[i].plan_seq_no = data[i].plan_seq_no;
+				arr[i].plan_enroll_date = data[i].plan_enroll_date;
+				arr[i].plan_start_date = data[i].plan_start_date;
+				arr[i].plan_end_date = data[i].plan_end_date;
+				arr[i].plan_update_date = data[i].plan_update_date;
+				arr[i].plan_title = data[i].plan_title;
+				arr[i].plan_content = data[i].plan_content;
+				arr[i].plan_state = data[i].plan_state;
+
+			}
+
+			let spanCount = 0;
+	
+			for (let i = 0; i < data.length; i++) {
+
+				let titleSpan = $("<span>").html(data[i].plan_title).addClass('form-control');
 				let dayStr = data[i].plan_start_date.substr(0, 10);
 				let str = "Y";
 				let subSm = data[i].plan_start_date.substring(6, 7);
@@ -209,54 +233,56 @@ function selectPlan() {
 				let subEd = data[i].plan_end_date.substring(8, 10);
 				let subS = subSm + '/' + subSd;
 				let subE = subEm + '/' + subEd;
-				let baseData = data[0].plan_start_date.substr(0, 10);
-				
-				$("#planView_modal .modal-body").append(span);
+				let baseData;
+				let hiddenVal = $(".hiddenDay_" + subSd);
 
-				$("input[name=fullDay]").each(function(idx) {
+				var li = $("<li>");
+				var div = $("<div>");
+				var hidNo = $("<input>");
+				hidNo.attr({
+					'class': 'hidNo',
+					'value': data[i].plan_seq_no,
+					'type': 'hidden'
+				});
 
-					var self = $(this);
+				li.append(hidNo);
 
-					var hiddenVal = $(this).val();
+				if ((data[i].plan_state).trim() === 'Y') {
+					li.addClass('list-group-item list-group-item-danger');
 
-					if (hiddenVal === dayStr) {
-						var li = $("<li>");
-						var div = $("<div>");
-						var hidNo = $("<input>");
-						hidNo.attr({
-							'class': 'hidNo',
-							'value': data[i].plan_seq_no,
-							'type': 'hidden'
-						})
-						li.append(hidNo);
-						if ((data[i].plan_state).trim() === 'Y') {
-							li.addClass('list-group-item list-group-item-danger');
+				} else {
+					li.addClass('list-group-item');
+				}
 
-						} else {
-							li.addClass('list-group-item');
-						}
+				if (hiddenVal < today) {
+					li.append(data[i].plan_title + '(' + subS + '-' + subE + ')').css({
+						'text-decoration': 'line-through',
+						'color': 'red'
+					});
+				} else {
+					li.append(data[i].plan_title + '(' + subS + '-' + subE + ')');
+				}
 
-						if (hiddenVal < today) {
-							li.append(data[i].plan_title + '(' + subS + '-' + subE + ')').css({
-								'text-decoration': 'line-through',
-								'color': 'red'
-							});
-						} else {
-							li.append(data[i].plan_title + '(' + subS + '-' + subE + ')');
-						}
 
-						self.next().next().append(li);
+				$("#planView_modal .modal-body").append(titleSpan);
 
-					}
+				baseData = subSd;
 
-				})
+				if (spanCount == 4) {
+
+					spanCount = 0;
+					baseData = data[i].plan_start_date.substring(8, 10);
+					continue;
+				}
+
+				if (baseData == subSd) {
+					spanCount++;
+					$(".hiddenDay_" + subSd).next().next().append(li);
+
+				}
 			}
-
-
-
 		}
 	});
-
 }
 
 //이전달 버튼
@@ -320,10 +346,10 @@ $(document).on('click', '.inputDay', function(e) {
 });
 
 $("#enrollBtn").click(function() {
-	
+
 	let ajaxData = $("#plan_form").serialize();
 	$("#plan_modal").modal('hide');
-	
+
 	$.ajax({
 		url: '/plan_enroll',
 		type: 'post',
@@ -336,10 +362,10 @@ $("#enrollBtn").click(function() {
 });
 
 $("#updateEndBtn").click(function() {
-	
+
 	let ajaxData = $("#plan_form").serialize();
 	$("#plan_modal").modal('hide');
-	
+
 	$.ajax({
 		url: '/plan_update',
 		type: 'post',
@@ -449,4 +475,30 @@ $("#plan_end_date").change(function() {
 		alert('이전 날짜는 등록 할 수 없습니다.');
 		$("#plan_end_date").val(today);
 	}
+})
+
+$(document).on('click', '.planCountInput', function(e) {
+
+	$("#dayDiv").html('');
+
+	for (let i = 0; i < Object.keys(arr).length; i++) {
+		if ((arr[i].plan_start_date.substr(0, 10)) == $(e.target).prev().val()) {			
+
+			let sp = $("<span>");
+			sp.attr('class', 'dropdown-item').html(arr[i].plan_title);
+			$(e.target).append(sp);
+			/*$(e.target).after().append(sp);*/
+		}
+	}
+	var x = e.clientX;
+
+	var y = e.clientY;
+
+		console.log('nxt', x, y);
+		$(".dropdown-menu").css({
+			'left': (x + 20) + 'px',
+			'top': (y + 15) + 'px'
+		})
+	
+
 })

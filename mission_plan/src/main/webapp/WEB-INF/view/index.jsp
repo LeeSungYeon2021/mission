@@ -6,9 +6,9 @@
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
 <%@ include file="/WEB-INF/view/common/header.jsp"%>
-<section>
-	<div class="container-fluid">
-
+<section style="">
+	<div class="container">
+		<div class="tbl_div">
 		<table class="table " id="tbl_plan">
 			<thead>
 				<tr>
@@ -58,6 +58,9 @@
 
 			</tbody>
 		</table>
+		<div id="dayDiv" class="dropdown-menu">
+		</div>
+		</div>
 		<!-- 일별 일정 리스트 -->
 			<div class="modal" id="planDay_modal" tabindex="-1" role="dialog">
 			<div class="modal-dialog" role="document">
