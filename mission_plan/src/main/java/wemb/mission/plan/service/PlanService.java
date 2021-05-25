@@ -19,4 +19,6 @@ public interface PlanService {
 	int planUpdate(Plan plan) ;
 	//일정 삭제
 	int planDelete(int no) ;
+	//일정 중요도 카운트
+	int planState(String replaceDay);
 }

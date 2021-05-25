@@ -28,6 +28,7 @@
 #tbl_plan > tbody > tr > td {
 	width :200px;
 	height:130px;
+	padding:0px;
 }
 
 #tbl_plan > tbody > tr > td > input{
@@ -86,15 +87,19 @@
 #plan_state ,#plan_title ,#plan_content, #plan_start_date,#plan_end_date{
 	background-color:white;
 }
-
-#dayDiv {
+#planDay_modal {
+	width:300px;
+	height:auto;
 	position:absolute;
-	width:120px;	
-	border : 1px solid lightgray;
 }
-
-#dayDiv span {
-	font-size:12px;
+input.error {
+	border : 1px solid red;
+	width:100%;
 }
-
+ label.error{
+	display:block;
+	width:100%;
+	margin-left :150px;
+	color:red;
+	}
 

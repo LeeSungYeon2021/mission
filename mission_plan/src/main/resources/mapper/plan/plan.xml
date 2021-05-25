@@ -11,7 +11,10 @@
 		INSERT INTO TB_PLAN
 		VALUES(SEQ_PLAN.NEXTVAL,SYSDATE,#{plan_start_date},#{plan_end_date},SYSDATE,#{plan_title},#{plan_content},#{plan_state})
 	</insert>
-
+	
+	<select id="planState" resultType="_int">
+		SELECT COUNT(*) FROM TB_PLAN WHERE PLAN_STATE = 'Y' AND PLAN_START_DATE LIKE '%'||#{replaceDay}||'%'
+	</select>
 	<!-- 해당 월 일정 조회 -->
 	<select id="planSelect" resultType="wemb.mission.plan.vo.Plan">		
 		SELECT * FROM TB_PLAN WHERE PLAN_START_DATE LIKE '%'||#{SUBDAY}||'%'  ORDER BY PLAN_START_DATE, (CASE WHEN PLAN_STATE = 'Y' THEN 0 ELSE 1 END),PLAN_ENROLL_DATE ASC

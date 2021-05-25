@@ -16,4 +16,5 @@ public interface PlanDao {
 	Plan planView(int no);
 	int planUpdate(Plan plan);
 	int planDelete(int no);
+	int planState(String replaceDay);
 }

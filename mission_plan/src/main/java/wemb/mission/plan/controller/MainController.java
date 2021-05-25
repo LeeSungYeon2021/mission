@@ -67,8 +67,7 @@ public class MainController {
 	}
 
 	// 일정 등록
-	@RequestMapping(value = "/plan_enroll", method = RequestMethod.POST)
-	@ResponseBody
+	@RequestMapping(value = "/plan_enroll", method = RequestMethod.POST)	
 	public String planEnroll(Plan plan) {
 		String msg = "";
 	
@@ -78,7 +77,7 @@ public class MainController {
 		}else {
 			msg = "등록에 실패하였습니다.";
 		}
-		return msg;
+		return "redirect:/main";
 	}
 	
 	// 일정 수정
@@ -121,5 +120,15 @@ public class MainController {
 		Plan p = planService.planView(no);
 		
 		return p;
+	}
+	
+	@RequestMapping(value = "/plan_state" , method = RequestMethod.POST)
+	@ResponseBody
+	public int planState_Select(String subDay) {
+		
+		log.info("sub : {} ",subDay);
+		int result = planService.planState(subDay);
+		
+		return result;
 	}
 }

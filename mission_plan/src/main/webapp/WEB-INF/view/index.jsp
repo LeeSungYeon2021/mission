@@ -58,15 +58,14 @@
 
 			</tbody>
 		</table>
-		<div id="dayDiv" class="dropdown-menu">
-		</div>
+	
 		</div>
 		<!-- 일별 일정 리스트 -->
-			<div class="modal" id="planDay_modal" tabindex="-1" role="dialog">
+			<div class="modal" data-backdrop="false" id="planDay_modal" tabindex="-1" role="dialog">
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<div class="modal-header" id="planDay_header">
-						<h5>전체 일정</h5>
+						
 						<button type="button" class="close" data-dismiss="modal"
 							aria-label="Close">
 							<span aria-hidden="true">&times;</span>
@@ -96,7 +95,7 @@
 		</div>
 
 		<!-- 일정 modal -->
-		<form id="plan_form" method="post">
+		<form action="/plan_enroll" id="plan_form" method="post">
 			<div class="modal" id="plan_modal" tabindex="-1" role="dialog">
 				<div class="modal-dialog" role="document">
 					<div class="modal-content">
@@ -130,7 +129,7 @@
 									<span class="input-group-text" id="basic-addon1">제목</span>
 								</div>
 								<input type="text" class="form-control" name="plan_title"
-									id="plan_title">
+									id="plan_title" required="true">
 							</div>
 
 							<div class="input-group mb-3">
@@ -139,9 +138,9 @@
 								</div>
 								<input type="date" class="form-control"
 									aria-describedby="basic-addon1" id="plan_start_date"
-									type="date" name="plan_start_date"> <input type="date"
+									type="date" name="plan_start_date" required="required"> <input type="date"
 									class="form-control" aria-describedby="basic-addon1"
-									id="plan_end_date" type="date" name="plan_end_date">
+									id="plan_end_date" type="date" name="plan_end_date" required="required">
 							</div>
 							<div class="input-group mb-3">
 								<div class="">
@@ -156,7 +155,7 @@
 								aria-label="...">
 
 								<div class="btn-group" role="group">
-									<button id="enrollBtn" type="button" class="btn btn-danger">저장</button>
+									<button id="enrollBtn" type="submit" class="btn btn-danger">저장</button>
 									<button id="updateEndBtn" type="button" class="btn btn-danger">저장</button>									
 								</div>
 								

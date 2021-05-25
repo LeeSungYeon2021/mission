@@ -50,6 +50,13 @@ public class PlanServiceImpl implements PlanService {
 		// TODO Auto-generated method stub
 		return planDao.planDelete(no);
 	}
+
+	@Override
+	public int planState(String replaceDay) {
+		// TODO Auto-generated method stub
+		return planDao.planState(replaceDay);
+	}
+	
 	
 	
 	
