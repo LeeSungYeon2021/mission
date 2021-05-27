@@ -10,6 +10,7 @@
 #tbl_plan > thead > tr > td {
 	border:none;
 	width : 200px;
+	font-weight:bold;
 }
 
 #tbl_plan > thead > tr > td > input{
@@ -27,8 +28,7 @@
 
 #tbl_plan > tbody > tr > td {
 	width :200px;
-	height:130px;
-	padding:0px;
+	height:130px;	
 }
 
 #tbl_plan > tbody > tr > td > input{

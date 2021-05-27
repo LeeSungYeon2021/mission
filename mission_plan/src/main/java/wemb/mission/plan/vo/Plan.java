@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Plan {
-
+	private int plan_key;
 	private int plan_seq_no;
 	private Date plan_enroll_date;
 	private String plan_start_date;

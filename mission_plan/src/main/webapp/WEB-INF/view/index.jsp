@@ -7,7 +7,7 @@
 	src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
 <%@ include file="/WEB-INF/view/common/header.jsp"%>
 <section style="">
-	<div class="container">
+	<div class="container-fluid">
 		<div class="tbl_div">
 		<table class="table " id="tbl_plan">
 			<thead>
@@ -55,7 +55,7 @@
 			</thead>
 
 			<tbody>
-
+			
 			</tbody>
 		</table>
 	
@@ -147,7 +147,7 @@
 									<span class="input-group-text" id="basic-addon1">메모</span>
 								</div>
 								<textarea id="plan_content" name="plan_content"
-									class="form-control"></textarea>
+									class="form-control"></textarea>								
 							</div>
 						</div>
 						<div class="modal-footer">

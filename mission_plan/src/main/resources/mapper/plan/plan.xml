@@ -9,16 +9,18 @@
 	<insert id="planInsert"
 		parameterType="wemb.mission.plan.vo.Plan">
 		INSERT INTO TB_PLAN
-		VALUES(SEQ_PLAN.NEXTVAL,SYSDATE,#{plan_start_date},#{plan_end_date},SYSDATE,#{plan_title},#{plan_content},#{plan_state})
+ 		VALUES(SEQ_PLAN.NEXTVAL,SYSDATE,TO_DATE(#{plan_start_date},'yyyy.mm.dd'),TO_DATE(#{plan_end_date},'yyyy.mm.dd'),SYSDATE,#{plan_title},#{plan_content},#{plan_state}) 
 	</insert>
 	
+	<!-- 일정 상태 카운트 조회 -->
 	<select id="planState" resultType="_int">
 		SELECT COUNT(*) FROM TB_PLAN WHERE PLAN_STATE = 'Y' AND PLAN_START_DATE LIKE '%'||#{replaceDay}||'%'
 	</select>
 	<!-- 해당 월 일정 조회 -->
-	<select id="planSelect" resultType="wemb.mission.plan.vo.Plan">		
-		SELECT * FROM TB_PLAN WHERE PLAN_START_DATE LIKE '%'||#{SUBDAY}||'%'  ORDER BY PLAN_START_DATE, (CASE WHEN PLAN_STATE = 'Y' THEN 0 ELSE 1 END),PLAN_ENROLL_DATE ASC
+	<select id="planSelect" resultType="wemb.mission.plan.vo.Plan" parameterType="string">		
+		<!-- SELECT * FROM TB_PLAN WHERE PLAN_START_DATE LIKE '%'||#{SUBDAY}||'%'  ORDER BY PLAN_START_DATE, (CASE WHEN PLAN_STATE = 'Y' THEN 0 ELSE 1 END),PLAN_ENROLL_DATE ASC -->
 		<!-- SELECT * FROM TB_PLAN WHERE PLAN_START_DATE LIKE '%'||#{SUBDAY}||'%' ORDER BY (CASE WHEN PLAN_STATE = 'Y' THEN 1 ELSE 2 END ),PLAN_ENROLL_DATE ASC -->  
+		SELECT * FROM TB_PLAN WHERE PLAN_START_DATE BETWEEN TO_DATE(#{fDay},'YYYY-MM-DD') AND TO_DATE(#{lDay},'YYYY-MM-DD') ORDER BY PLAN_START_DATE, (CASE WHEN PLAN_STATE = 'Y' THEN 0 ELSE 1 END),PLAN_ENROLL_DATE ASC
 	</select>
 
 	<!-- 일정 카운트 조회 -->
@@ -36,7 +38,7 @@
 	
 	<!-- 일정 수정 -->
 	<update id="planUpdate" parameterType="wemb.mission.plan.vo.Plan">
-		UPDATE TB_PLAN SET PLAN_START_DATE = #{plan_start_date} , PLAN_END_DATE = #{plan_end_date} , PLAN_UPDATE_DATE = SYSDATE , PLAN_TITLE = #{plan_title} ,
+		UPDATE TB_PLAN SET PLAN_START_DATE = TO_DATE(#{plan_start_date}) , PLAN_END_DATE = TO_DATE(#{plan_end_date}) , PLAN_UPDATE_DATE = SYSDATE , PLAN_TITLE = #{plan_title} ,
 		PLAN_CONTENT = #{plan_content} , PLAN_STATE = #{plan_state} WHERE PLAN_SEQ_NO = #{plan_seq_no}
 	</update>
 	

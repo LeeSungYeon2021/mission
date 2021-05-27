@@ -22,9 +22,9 @@ public class PlanServiceImpl implements PlanService {
 	}
 
 	@Override
-	public List<Plan> planSelect(String subDay) {
+	public List<Plan> planSelect(String fDay,String lDay) {
 		// TODO Auto-generated method stub
-		return planDao.planSelect(subDay);
+		return planDao.planSelect(fDay,lDay);
 	}
 
 	@Override
