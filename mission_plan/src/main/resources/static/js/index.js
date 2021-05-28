@@ -4,9 +4,9 @@
 
 $(function() {
 	//날짜 구하는 함수
-	dateInput();
+	createDate();
 	//달력 table 구현
-	calendar();
+	createCalendar();
 	//일정 조회 및 구현
 	selectPlan();
 	//일 및 월 개수 조회
@@ -41,7 +41,7 @@ var lastDay;
  *날짜 계산 함수 
  *
  */
-function dateInput(btnDate) {
+function createDate(btnDate) {
 
 	if(btnDate != null) {
 		date = new Date(btnDate);
@@ -49,6 +49,7 @@ function dateInput(btnDate) {
 	else {
 		date = new Date();
 	}
+	
 	let todayDate = new Date();
 
 	currentYear = date.getFullYear();
@@ -89,7 +90,7 @@ function dateInput(btnDate) {
  *달력 tbl 생성
  *
  */
-function calendar() {
+function createCalendar() {
 
 
 	$("#tbl_plan tbody").children().remove();
@@ -345,8 +346,8 @@ $("#prevBtn").on('click', function() {
 	}
 	let fullDate = [currentYear, (currentMonth - 1)].join(',');
 
-	dateInput(fullDate);
-	calendar();
+	createDate(fullDate);
+	createCalendar();
 	selectPlan();
 	planCount();
 });
@@ -364,8 +365,8 @@ $("#nextBtn").on('click', function() {
 
 	let fullDate = [currentYear, (parseInt(currentMonth) + 1)].join(',');
 
-	dateInput(fullDate);
-	calendar();
+	createDate(fullDate);
+	createCalendar();
 	selectPlan();
 	planCount();
 });
