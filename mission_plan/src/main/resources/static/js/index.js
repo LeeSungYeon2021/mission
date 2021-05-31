@@ -43,13 +43,13 @@ var lastDay;
  */
 function createDate(btnDate) {
 
-	if(btnDate != null) {
+	if (btnDate != null) {
 		date = new Date(btnDate);
 	}
 	else {
 		date = new Date();
 	}
-	
+
 	let todayDate = new Date();
 
 	currentYear = date.getFullYear();
@@ -114,8 +114,7 @@ function createCalendar() {
 			dayInput.attr({
 				'class': 'inputDay',
 				'type': 'text',
-				'value': count,
-				/*'readonly': 'true'*/
+				'value': count,								
 			}).css('font-weight', 'bold');
 
 			if (i == 0 || i % 7 == 0) {
@@ -131,7 +130,9 @@ function createCalendar() {
 					'value': currentYear + '-' + currentMonth + '-0' + count,
 					'name': 'fullDay',
 					'class': 'hiddenDay_' + count
-				})
+				});
+				
+				td.data('key', [currentYear,currentMonth,'0'+count].join("-"));
 			} else {
 				dayHidden = $("<input>");
 				dayHidden.attr({
@@ -139,7 +140,9 @@ function createCalendar() {
 					'value': currentYear + '-' + currentMonth + '-' + count,
 					'name': 'fullDay',
 					'class': 'hiddenDay_' + count
-				})
+				});
+				
+				td.data('key', [currentYear,currentMonth,count].join("-"));
 			}
 			//전체 일정 개수 표출 input
 			let planCountInput = $("<span>");
@@ -155,14 +158,13 @@ function createCalendar() {
 			});
 
 			let ul = $("<ul>");
-			
+
 			ul.addClass('list-group');
-			td.addClass('tdDay_' + count);
+			td.addClass('tdDay_' + count);		
 			td.append(dayInput);
 			td.append(dayHidden);
 			td.append(planCountInput);
-			td.append(ul);
-
+			td.append(ul);			
 			count++;
 
 		}
@@ -191,7 +193,7 @@ function planCount() {
 		method: 'post',
 		data: { day: countDate },
 		success: function(data) {
-			
+
 			if (data[0].monthCount == 0) {
 				$("#plan_countAll").html('전체일정 (없음)');
 			} else {
@@ -227,16 +229,15 @@ function planCount() {
  * 일정 전체 조회 
  */
 function selectPlan() {
-	
-	  var tmp ="";
-        tmp = tmp +"<li> It is Test </li>"
+
 
 	$("#tbl_plan tbody").children().children().children().children().remove();
 	$("#planView_footer").children().remove();
 	$("#planView_body").children().remove();
 
-	var fDay = [currentYear, currentMonth, '1'].join('-');
+	var fDay = [currentYear, currentMonth, '01'].join('-');
 	var lDay = [currentYear, currentMonth, lastDay].join('-');
+	console.log('f,lday', fDay, lDay);
 
 	$.ajax({
 		url: '/plan_select',
@@ -244,29 +245,14 @@ function selectPlan() {
 		method: 'post',
 		data: { fDay: fDay, lDay: lDay },
 		success: function(data) {
-
-			for (let i = 0; i < data.length; i++) {
-
-				arr[i] = new Object();
-				arr[i].plan_seq_no = data[i].plan_seq_no;
-				arr[i].plan_enroll_date = data[i].plan_enroll_date;
-				arr[i].plan_start_date = data[i].plan_start_date;
-				arr[i].plan_end_date = data[i].plan_end_date;
-				arr[i].plan_update_date = data[i].plan_update_date;
-				arr[i].plan_title = data[i].plan_title;
-				arr[i].plan_content = data[i].plan_content;
-				arr[i].plan_state = data[i].plan_state;
-			}
+			console.log('plan', data);
 
 			let spanCount = 0;
-			let ul =$("<ul>");
-			var ttt = $("<li></li>").append('ㅎㅇㅎㅇ');
-			var sspp = $("<span>").html('sdfsdf')
-						ul.append(ttt);
 			for (let i = 0; i < data.length; i++) {
 
-				
+
 				let dayStr = data[i].plan_start_date.substr(0, 10);
+				let dayStr2 = data[i].plan_end_date.substr(0, 10);
 				let str = "Y";
 				let subSm = data[i].plan_start_date.substring(6, 7);
 				let subSd = data[i].plan_start_date.substring(8, 10);
@@ -277,20 +263,29 @@ function selectPlan() {
 				let baseData = data[0].plan_start_date.substring(8, 10);
 				let hiddenVal = $(".hiddenDay_" + subSd).val();
 				let $titleSpan = $("<span>").html(data[i].plan_title).addClass('form-control');
-				
-				
+
+
 				let $startDate = $("<li></li>");
-				console.log('startDate',$startDate);
-				let $endDate = $("<li>");				
+				console.log('startDate', $startDate);
+				let $endDate = $("<li>");
 				let $hidNo = $("<input>");
-				
+				let $hidNos = $("<input>");
+
 				$hidNo.attr({
 					'class': 'hidNo',
 					'value': data[i].plan_seq_no,
 					'type': 'hidden'
 				});
+
+				$hidNos.attr({
+					'class': 'hidNo',
+					'value': data[i].plan_seq_no,
+					'type': 'hidden'
+				});
+
 				$startDate.append($hidNo);
-				$endDate.append($hidNo);
+				$endDate.append($hidNos);
+				
 				//일반 - 중요 체크
 				if ((data[i].plan_state).trim() === 'Y') {
 					$startDate.addClass('list-group-item list-group-item-danger');
@@ -307,7 +302,7 @@ function selectPlan() {
 						'text-decoration': 'line-through',
 						'color': 'red'
 					});
-					
+
 					$endDate.append(data[i].plan_title + '(' + subS + '-' + subE + ')').css({
 						'text-decoration': 'line-through',
 						'color': 'red'
@@ -319,9 +314,15 @@ function selectPlan() {
 
 
 				$("#planView_modal .modal-body").append($titleSpan);
-				$(".tdDay_" + subSd).find('ul').append($startDate);
-				$(".tdDay_" + subEd).find('ul').append($startDate);
 				
+				if ( $(".hiddenDay_"+subSd).val() == dayStr.trim()) {
+					if(dayStr != dayStr2 ) {
+						$(".tdDay_" + subEd).find('ul').append($endDate);	
+					}
+					
+					$(".tdDay_" + subSd).find('ul').append($startDate);
+					
+				}
 
 				if (i % 4 == 0 && i != 0) {
 					if (baseData == subSd) {
@@ -339,7 +340,7 @@ function selectPlan() {
  * 
  */
 $("#prevBtn").on('click', function() {
-	
+
 	if (currentMonth == 1) {
 		currentMonth = 13;
 		currentYear -= 1;
@@ -385,11 +386,11 @@ $(document).on('click', '.inputDay', function(e) {
 		url: '/plan_state',
 		data: { subDay: subDay },
 		type: 'post',
-		success: function(data) {			
-			stateCount = data;			
+		success: function(data) {
+			stateCount = data;
 		}
 	})
-	
+
 	//
 	if (targetVal.trim() < today) {
 		alert('지난 요일은 등록할 수 없습니다.');
@@ -408,9 +409,10 @@ $(document).on('click', '.inputDay', function(e) {
 		$('.modal-backdrop').remove();
 		$('#plan_modal').draggable({ handle: "#plan_modal_header" });
 	}
-		//현재 날짜 입력
-		$("#plan_start_date").val(targetVal);
+	//현재 날짜 입력
+	$("#plan_start_date").val(targetVal);
 });
+
 
 /*
  * 일정 상태값 변경 시 
@@ -423,6 +425,7 @@ $("#plan_state").change(function() {
 		alert('일반 일정만 등록이 가능합니다.');
 	}
 });
+
 
 $("#updateEndBtn").click(function() {
 
@@ -444,7 +447,7 @@ $("#updateEndBtn").click(function() {
  * 
  */
 $(document).on('click', '.list-group-item', function(e) {
-
+	console.log('dfd', $(e.target).children().val());
 	$.ajax({
 		url: '/plan_view',
 		type: 'post',
@@ -572,12 +575,18 @@ $("#plan_end_date").change(function() {
 $(document).on('click', '.planCountInput', function(e) {
 
 	$("#planDay_body").children().remove();
-
-	let ol = $("<ol>").attr({
+	$.ajax({
+		url:'/plan_dayList',
+		data:{day : $(e.target).prev().val()},
+		success : function(data) {
+			console.log('dayList',data);
+		}
+	})
+/*	let ol = $("<ol>").attr({
 		'start': '1',
 		'class': 'list-group'
 	});
-	for (let i = 0; i < Object.keys(arr).length; i++) {
+		
 		if ((arr[i].plan_start_date.substr(0, 10)) == $(e.target).prev().val()) {
 
 			let li = $("<li>")
@@ -599,7 +608,7 @@ $(document).on('click', '.planCountInput', function(e) {
 	$("#planDay_modal").css({
 		'left': (x + 10) + 'px',
 		'top': (y - 60) + 'px'
-	})
+	})*/
 })
 
 /*

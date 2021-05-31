@@ -60,6 +60,9 @@
 	width: 100%;
 } */
 
+#plan_modal {
+	width:auto;
+}
 .modal-body textarea {
 	border: 1px solid lightgray;
 	background-color: white;

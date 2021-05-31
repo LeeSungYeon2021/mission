@@ -7,6 +7,7 @@
 	src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
 <%@ include file="/WEB-INF/view/common/header.jsp"%>
 <section style="">
+<p id="ttt" data-key="tt"></p>
 	<div class="container-fluid">
 		<div class="tbl_div">
 		<table class="table " id="tbl_plan">
@@ -129,7 +130,7 @@
 									<span class="input-group-text" id="basic-addon1">제목</span>
 								</div>
 								<input type="text" class="form-control" name="plan_title"
-									id="plan_title" required="true">
+									id="plan_title">
 							</div>
 
 							<div class="input-group mb-3">
@@ -138,9 +139,12 @@
 								</div>
 								<input type="date" class="form-control"
 									aria-describedby="basic-addon1" id="plan_start_date"
-									type="date" name="plan_start_date" required="required"> <input type="date"
+									type="date" name="plan_start_date" required="required"> 
+								
+								<input type="date"
 									class="form-control" aria-describedby="basic-addon1"
 									id="plan_end_date" type="date" name="plan_end_date" required="required">
+
 							</div>
 							<div class="input-group mb-3">
 								<div class="">

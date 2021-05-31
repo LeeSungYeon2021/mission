@@ -1,7 +1,9 @@
 package wemb.mission.plan.controller;
 
+import java.sql.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.Scanner;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import ch.qos.logback.core.helpers.Transform;
 import wemb.mission.plan.service.PlanService;
 import wemb.mission.plan.vo.Plan;
 import wemb.mission.plan.vo.PlanCount;
@@ -46,13 +49,15 @@ public class MainController {
 		return list;
 	}
 
-	// 일정 조회
+	// 일정 조회(월 전체)
 	@RequestMapping(value = "/plan_select", method = RequestMethod.POST)
 	@ResponseBody
-	public List<Plan> planSelect(String fDay, String lDay) {
-
+	public List<Plan>  planSelect(String fDay, String lDay) {
+		
+		log.info("f l DAY : {} ",fDay);
+		log.info("f l DAY : {} ",lDay);
 		List<Plan> list = planService.planSelect(fDay, lDay);
-
+		log.info("list : {} ",list);
 		return list;
 
 	}
@@ -61,13 +66,9 @@ public class MainController {
 	@RequestMapping(value = "/plan_enroll", method = RequestMethod.POST)
 	public String planEnroll(Plan plan) {
 		String msg = "";
-
+		
 		int result = planService.planInsert(plan);
-		if (result != 0) {
-			msg = "등록 되었습니다.";
-		} else {
-			msg = "등록에 실패하였습니다.";
-		}
+
 		return "redirect:/main";
 	}
 
@@ -112,7 +113,8 @@ public class MainController {
 
 		return p;
 	}
-
+	
+	//일정 상태값 조회
 	@RequestMapping(value = "/plan_state", method = RequestMethod.POST)
 	@ResponseBody
 	public int planState_Select(String subDay) {

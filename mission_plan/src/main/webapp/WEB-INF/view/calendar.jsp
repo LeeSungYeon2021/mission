@@ -57,7 +57,7 @@
 						<td></td>
 					</c:when>
 					<c:otherwise>
-						<td date-key="${parseYear }${parseMonth }${day}" class="tdDay_${day }">
+						<td date-key="${dataKey[status.index] }" class="tdDay_${day }">
 							<span><c:out value="${day }" /></span> 
 							<span>count</span>
 							<ul class="list-group">								
