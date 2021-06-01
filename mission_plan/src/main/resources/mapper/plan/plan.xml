@@ -6,8 +6,7 @@
 <mapper namespace="wemb.mission.plan.dao.PlanDao">
 
 	<!-- 일정 등록 -->
-	<insert id="planInsert"
-		parameterType="wemb.mission.plan.vo.Plan">
+	<insert id="planInsert" parameterType="wemb.mission.plan.vo.Plan">
 		INSERT INTO TB_PLAN
 		VALUES(SEQ_PLAN.NEXTVAL,SYSDATE,#{plan_start_date},#{plan_end_date},SYSDATE,#{plan_title},#{plan_content},#{plan_state})
 	</insert>
@@ -19,15 +18,10 @@
 		'%'||#{replaceDay}||'%'
 	</select>
 	<!-- 해당 월 일정 조회 -->
-	<select id="planSelect" resultType="wemb.mission.plan.vo.Plan"
-		parameterType="string">
-		<!-- SELECT * FROM TB_PLAN WHERE PLAN_START_DATE LIKE '%'||#{SUBDAY}||'%' 
-			ORDER BY PLAN_START_DATE, (CASE WHEN PLAN_STATE = 'Y' THEN 0 ELSE 1 END),PLAN_ENROLL_DATE 
-			ASC -->
-		<!-- SELECT * FROM TB_PLAN WHERE PLAN_START_DATE LIKE '%'||#{SUBDAY}||'%' 
-			ORDER BY (CASE WHEN PLAN_STATE = 'Y' THEN 1 ELSE 2 END ),PLAN_ENROLL_DATE 
-			ASC -->
-		SELECT
+	<select id="planSelect" resultType="wemb.mission.plan.vo.Plan" parameterType="string">
+		
+		SELECT ROWNUM AS RANK,A.* FROM
+		  	(SELECT 
 			PLAN_SEQ_NO,
 			TO_CHAR(PLAN_ENROLL_DATE,'YYYY-MM-DD') AS PLAN_ENROLL_DATE,
 			TO_CHAR(PLAN_START_DATE,'YYYY-MM-DD') AS PLAN_START_DATE,
@@ -37,36 +31,34 @@
 			PLAN_CONTENT,
 			PLAN_STATE
 			FROM TB_PLAN 
-			WHERE PLAN_START_DATE BETWEEN TO_DATE(#{fDay},'YYYY-MM-DD')
-			AND TO_DATE(#{lDay},'YYYY-MM-DD') ORDER BY PLAN_START_DATE, (CASE WHEN
-			PLAN_STATE = 'Y' THEN 0 ELSE 1 END),PLAN_ENROLL_DATE ASC
+			WHERE PLAN_START_DATE BETWEEN TO_DATE(#{startDay},'YYYY-MM-DD')
+			AND TO_DATE(#{endDay},'YYYY-MM-DD') ORDER BY PLAN_START_DATE, (CASE WHEN
+			PLAN_STATE = 'Y' THEN 0 ELSE 1 END),PLAN_ENROLL_DATE ASC) A 
 	</select>
 
 	<!-- 일정 카운트 조회 -->
-	<select id="planCount"
-		resultType="wemb.mission.plan.vo.PlanCount">
+	<select id="planCount" resultType="wemb.mission.plan.vo.PlanCount" parameterType="string">
 		SELECT A.*,B.MONTHCOUNT FROM
-		(SELECT PLAN_START_DATE,COUNT(*) AS DAYCOUNT FROM TB_PLAN WHERE
-		PLAN_START_DATE LIKE '%'||#{SUBDAY}||'%' GROUP BY PLAN_START_DATE) A,
-		(SELECT COUNT(*)AS MONTHCOUNT FROM TB_PLAN WHERE PLAN_START_DATE LIKE
-		'%'||#{SUBDAY}||'%') B
+		(SELECT PLAN_START_DATE,COUNT(*) FROM TB_PLAN WHERE PLAN_START_DATE BETWEEN TO_DATE(#{startDay},'YYYY-MM-DD') 
+		AND TO_DATE(#{endDay},'yyyy-mm-dd') group by plan_start_date) A,
+		(SELECT COUNT(*)AS MONTHCOUNT FROM TB_PLAN WHERE PLAN_START_DATE BETWEEN TO_DATE(#{startDay},'YYYY-MM-DD') 
+		AND TO_DATE(#{endDay},'yyyy-mm-dd') ) B
 	</select>
 
 	<!-- 일정 상세보기 -->
-	<select id="planView" parameterType="_int"
-		resultType="wemb.mission.plan.vo.Plan">
+	<select id="planView" parameterType="_int" resultType="wemb.mission.plan.vo.Plan">
 		SELECT * FROM TB_PLAN WHERE PLAN_SEQ_NO = #{no}
 	</select>
 
 	<!-- 일정 수정 -->
-	<update id="planUpdate"
-		parameterType="wemb.mission.plan.vo.Plan">
-		UPDATE TB_PLAN SET PLAN_START_DATE =
-		TO_DATE(#{plan_start_date}) , PLAN_END_DATE =
-		TO_DATE(#{plan_end_date}) , PLAN_UPDATE_DATE = SYSDATE , PLAN_TITLE =
-		#{plan_title} ,
-		PLAN_CONTENT = #{plan_content} , PLAN_STATE =
-		#{plan_state} WHERE PLAN_SEQ_NO = #{plan_seq_no}
+	<update id="planUpdate" parameterType="wemb.mission.plan.vo.Plan">
+		UPDATE TB_PLAN SET 
+		PLAN_START_DATE = TO_DATE(#{plan_start_date}) , 
+		PLAN_END_DATE = TO_DATE(#{plan_end_date}) , 
+		PLAN_UPDATE_DATE = SYSDATE ,
+		PLAN_TITLE = #{plan_title} ,
+		PLAN_CONTENT = #{plan_content} ,
+		PLAN_STATE = #{plan_state} WHERE PLAN_SEQ_NO = #{plan_seq_no}
 	</update>
 
 	<!-- 일정 삭제 -->

@@ -11,8 +11,8 @@ import wemb.mission.plan.vo.PlanCount;
 public interface PlanDao {
 
 	int planInsert(Plan plan);
-	List<Plan> planSelect(String fDay,String lDay);
-	List<PlanCount> planCount(String subDay);
+	List<Plan> planSelect(String startDay,String endDay);
+	List<PlanCount> planCount(String startDay,String endDay);
 	Plan planView(int no);
 	int planUpdate(Plan plan);
 	int planDelete(int no);

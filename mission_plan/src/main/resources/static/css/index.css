@@ -1,10 +1,17 @@
 
 .tbl_div {
-	width:1360px;
+	margin-top:50px;
 }
 #tbl_plan {
 	width: 100%;
 	border:none;
+}
+#currentYear {
+	font-weight:bold;
+}
+
+#currentMonth {
+	font-weight:bold;
 }
 
 #tbl_plan > thead > tr > td {
@@ -17,8 +24,7 @@
 	border: none;
 	width:70px;
 	display:inline;
-	font-size:20px;		
-	/* font-weight:bold; */
+	font-size:20px;			
 }
 
 #tbl_plan > thead > tr > td > button{
@@ -31,6 +37,12 @@
 	height:130px;	
 }
 
+#tbl_plan > tbody > tr > td:last-child > input {
+	color: blue;
+}
+#tbl_plan > tbody > tr > td:first-child > input {
+	color: red;
+}
 #tbl_plan > tbody > tr > td > input{
 	border: none;		
 	width:55px;	
@@ -60,8 +72,8 @@
 	width: 100%;
 } */
 
-#plan_modal {
-	width:auto;
+.modal-title {
+	font-weight:bold;
 }
 .modal-body textarea {
 	border: 1px solid lightgray;
@@ -104,5 +116,11 @@ input.error {
 	width:100%;
 	margin-left :150px;
 	color:red;
-	}
+}
 
+.inputDay {
+	font-weight:bold;
+}
+#basic-addon1 {
+	font-weight:bold;
+}

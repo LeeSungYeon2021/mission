@@ -10,9 +10,9 @@ public interface PlanService {
 	//일정 등록
 	int planInsert(Plan plan);
 	//일정 조회
-	List<Plan> planSelect(String fDay,String lDay);
+	List<Plan> planSelect(String startDay,String endDay);
 	//일정 개수 조회
-	List<PlanCount> planCount(String subDay);
+	List<PlanCount> planCount(String startDay,String endDay);
 	//일정 상세 조회
 	Plan planView(int no);
 	//일정 수정

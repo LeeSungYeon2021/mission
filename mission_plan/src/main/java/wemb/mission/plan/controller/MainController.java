@@ -26,20 +26,26 @@ public class MainController {
 	@Autowired
 	private PlanService planService;
 
-	@RequestMapping(value = "/main")
+	@RequestMapping(value = "/")
 	public String index() {
 
 		return "index";
 	}
+	
+	@RequestMapping(value = "/calendar")
+	public String calendar() {
 
+		return "/calendar/calendar";
+	}
+	
 	// 일정 카운트
 	@RequestMapping(value = "/plan_count", method = RequestMethod.POST)
 	@ResponseBody
-	public List<PlanCount> planCount(String day) {
+	public List<PlanCount> planCount(String startDay,String endDay) {
 
-		String subDay = day.substring(2);
+		
 		PlanCount pc = new PlanCount("null", 0, 0);
-		List<PlanCount> list = planService.planCount(subDay);
+		List<PlanCount> list = planService.planCount(startDay,endDay);
 
 		if (list.size() == 0) {
 
@@ -52,11 +58,9 @@ public class MainController {
 	// 일정 조회(월 전체)
 	@RequestMapping(value = "/plan_select", method = RequestMethod.POST)
 	@ResponseBody
-	public List<Plan>  planSelect(String fDay, String lDay) {
+	public List<Plan>  planSelect(String startDay, String endDay) {
 		
-		log.info("f l DAY : {} ",fDay);
-		log.info("f l DAY : {} ",lDay);
-		List<Plan> list = planService.planSelect(fDay, lDay);
+		List<Plan> list = planService.planSelect(startDay, endDay);
 		log.info("list : {} ",list);
 		return list;
 
@@ -69,7 +73,7 @@ public class MainController {
 		
 		int result = planService.planInsert(plan);
 
-		return "redirect:/main";
+		return "redirect:/calendar";
 	}
 
 	// 일정 수정
@@ -77,6 +81,8 @@ public class MainController {
 	@ResponseBody
 	public String planUpdate(Plan plan) {
 		String msg = "";
+		
+		log.info("plan plan : {} ",plan);
 		int result = planService.planUpdate(plan);
 		if (result != 0) {
 			msg = "등록 되었습니다.";
