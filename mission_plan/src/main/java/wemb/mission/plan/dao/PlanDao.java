@@ -12,9 +12,10 @@ public interface PlanDao {
 
 	int planInsert(Plan plan);
 	List<Plan> planSelect(String startDay,String endDay);
-	List<PlanCount> planCount(String startDay,String endDay);
+	int planMonthCount(String startDay,String endDay);
 	Plan planView(int no);
 	int planUpdate(Plan plan);
 	int planDelete(int no);
 	int planState(String replaceDay);
+	List<PlanCount> planDayCount(String startDay, String endDay);
 }

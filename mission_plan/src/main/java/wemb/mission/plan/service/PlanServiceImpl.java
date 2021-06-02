@@ -28,9 +28,9 @@ public class PlanServiceImpl implements PlanService {
 	}
 
 	@Override
-	public List<PlanCount> planCount(String startDay,String endDay) {
+	public int planMonthCount(String startDay,String endDay) {
 		// TODO Auto-generated method stub
-		return planDao.planCount(startDay,endDay);
+		return planDao.planMonthCount(startDay,endDay);
 	}
 
 	@Override
@@ -56,6 +56,13 @@ public class PlanServiceImpl implements PlanService {
 		// TODO Auto-generated method stub
 		return planDao.planState(replaceDay);
 	}
+
+	@Override
+	public List<PlanCount> planDayCount(String startDay, String endDay) {
+		// TODO Auto-generated method stub
+		return planDao.planDayCount(startDay,endDay);
+	}
+	
 	
 	
 	

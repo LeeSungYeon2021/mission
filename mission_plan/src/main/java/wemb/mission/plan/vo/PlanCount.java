@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 public class PlanCount {
 
 	private String plan_start_date;
-	private int dayCount;
-	private int monthCount;
+	private String plan_end_date;
+	private int count;
+	
 }

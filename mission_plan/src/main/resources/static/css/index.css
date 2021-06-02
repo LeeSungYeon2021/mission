@@ -1,80 +1,76 @@
-
 .tbl_div {
-	margin-top:50px;
+	margin-top: 50px;
 }
+
 #tbl_plan {
 	width: 100%;
-	border:none;
+	border: none;
 }
+
 #currentYear {
-	font-weight:bold;
+	font-weight: bold;
 }
 
 #currentMonth {
-	font-weight:bold;
+	font-weight: bold;
 }
 
-#tbl_plan > thead > tr > td {
-	border:none;
-	width : 200px;
-	font-weight:bold;
-}
-
-#tbl_plan > thead > tr > td > input{
+#tbl_plan>thead>tr>td {
 	border: none;
-	width:70px;
-	display:inline;
-	font-size:20px;			
+	width: 200px;
+	font-weight: bold;
 }
 
-#tbl_plan > thead > tr > td > button{
-	border: none;		
-	background-color : white;	
+#tbl_plan>thead>tr>td>input {
+	border: none;
+	width: 70px;
+	display: inline;
+	font-size: 20px;
 }
 
-#tbl_plan > tbody > tr > td {
-	width :200px;
-	height:130px;	
+#tbl_plan>thead>tr>td>button {
+	border: none;
+	background-color: white;
 }
 
-#tbl_plan > tbody > tr > td:last-child > input {
+#tbl_plan>tbody>tr>td {
+	width: 200px;
+	height: 130px;
+}
+
+#tbl_plan>tbody>tr>td:last-child>input {
 	color: blue;
 }
-#tbl_plan > tbody > tr > td:first-child > input {
+
+#tbl_plan>tbody>tr>td:first-child>input {
 	color: red;
 }
-#tbl_plan > tbody > tr > td > input{
-	border: none;		
-	width:55px;	
+
+#tbl_plan>tbody>tr>td>input {
+	border: none;
+	width: 55px;
 }
 
-#tbl_plan > tbody > tr > td > ul {
+#tbl_plan>tbody>tr>td>ul {
 	margin-top: 10px;
 }
 
-#tbl_plan > tbody > tr > td > ul > li {
+#tbl_plan>tbody>tr>td>ul>li {
 	border-top: none;
 	border-left: none;
 	border-right: none;
 	font-size: 10px;
 	padding: 0px;
-} 
+}
 
 #plan_countAll {
-	font-weight:bold;
+	font-weight: bold;
 }
-
-/* .modal-body #plan_title {
-	border-top: none;
-	border-left: none;
-	border-right: none;
-	border-bottom: 1px solid black;
-	width: 100%;
-} */
 
 .modal-title {
-	font-weight:bold;
+	font-weight: bold;
 }
+
 .modal-body textarea {
 	border: 1px solid lightgray;
 	background-color: white;
@@ -83,44 +79,48 @@
 }
 
 .modal-header button {
-	border:none;
-	background-color:white;
+	border: none;
+	background-color: white;
 }
 
 .plan_date {
-	width:130px;
-	display : inline;
+	width: 130px;
+	display: inline;
 }
+
 .planView_modal {
-	border:none;
+	border: none;
 }
 
-#updateBtn{
-	margin-left:250px;
+#editViewBtn {
+	margin-left: 250px;
 }
 
-#plan_state ,#plan_title ,#plan_content, #plan_start_date,#plan_end_date{
-	background-color:white;
-}
-#planDay_modal {
-	width:300px;
-	height:auto;
-	position:absolute;
-}
-input.error {
-	border : 1px solid red;
-	width:100%;
-}
- label.error{
-	display:block;
-	width:100%;
-	margin-left :150px;
-	color:red;
+#plan_state, #plan_title, #plan_content, #plan_start_date,
+	#plan_end_date {
+	background-color: white;
 }
 
 .inputDay {
-	font-weight:bold;
+	font-weight: bold;
 }
-#basic-addon1 {
-	font-weight:bold;
+
+.plan_state_Y {
+	color: red;
+	font-weight: bold;
+}
+
+.pass_plan {
+	text-decoration: line-through;
+	color: gray;
+}
+
+span.dayCount {
+	text-align: right;
+	font-size: 10px;
+	margin-left: 70px;
+}
+
+span.listSpan{
+	display:block;
 }

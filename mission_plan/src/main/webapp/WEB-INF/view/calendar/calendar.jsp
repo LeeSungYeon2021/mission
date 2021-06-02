@@ -38,7 +38,7 @@
 					<td></td>
 					<td></td>
 					<td></td>
-					<td><span id="plan_countAll">전체일정</span></td>
+					<td><span id="plan_monthCount"></span></td>
 
 				</tr>
 				<tr>
@@ -58,36 +58,20 @@
 		</table>
 	
 		</div>
-		<!-- 일별 일정 리스트 -->
-			<div class="modal" data-backdrop="false" id="planDay_modal" tabindex="-1" role="dialog">
+				
+		<!-- 일정 리스트 modal -->
+		<div class="modal" id="planList_modal" tabindex="-1" role="dialog">
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
-					<div class="modal-header" id="planDay_header">
-						
+					<div class="modal-header" id="planList_header">
+						<h5>전체 일정</h5>
 						<button type="button" class="close" data-dismiss="modal"
 							aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
 					</div>
-					<div class="modal-body" id="planDay_body"></div>
-					<div class="modal_footer" id="planDay_footer"></div>
-				</div>
-			</div>
-		</div>
-		
-		<!-- 일정상세 modal -->
-		<div class="modal" id="planView_modal" tabindex="-1" role="dialog">
-			<div class="modal-dialog" role="document">
-				<div class="modal-content1">
-					<div class="modal-header" id="planView_header">
-						<h5>전체 일정</h5>
-						<button type="button" class="close" data-dismiss="modal1"
-							aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</div>
-					<div class="modal-body" id="planView_body"></div>
-					<div class="modal_footer" id="planView_footer"></div>
+					<div class="modal-body" id="planList_body"></div>
+					<div class="modal_footer" id="planList_footer"></div>
 				</div>
 			</div>
 		</div>
@@ -99,10 +83,10 @@
 					<div class="modal-content">
 						<div class="modal-header" id="plan_modal_header">
 							<h5 class="modal-title">일정 등록</h5>
-							<button type="button" id="updateBtn">
+							<button type="button" id="editViewBtn">
 								<i class="fas fa-pen"></i>
 							</button>
-							<button type="button" id="deleteBtn">
+							<button type="button" id="delBtn">
 								<i class="fas fa-trash-alt"></i>
 							</button>
 							<button type="button" class="" data-dismiss="modal"
@@ -123,10 +107,11 @@
 							</div>
 
 							<div class="input-group mb-3">
-								<div class="input-group-prepend">
+								<div class="input-group-prepend">									
 									<span class="input-group-text">제목</span>
 								</div>
-								<input type="text" class="form-control" name="plan_title" id="plan_title">
+								<input type="hidden" name="plan_seq_no" id="plan_seq_no" value="0"> 
+								<input type="text" class="form-control" name="plan_title" id="plan_title">								
 							</div>
 
 							<div class="input-group mb-3">
@@ -151,7 +136,7 @@
 
 								<div class="btn-group" role="group">
 									<button id="enrollBtn" type="submit" class="btn btn-dark">저장</button>
-									<button id="updateEndBtn" type="button" class="btn btn-danger">저장</button>									
+									<button id="editEndBtn" type="submit" class="btn btn-danger">저장</button>									
 								</div>
 								
 							</div>

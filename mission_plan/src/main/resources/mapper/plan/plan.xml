@@ -20,31 +20,44 @@
 	<!-- 해당 월 일정 조회 -->
 	<select id="planSelect" resultType="wemb.mission.plan.vo.Plan" parameterType="string">
 		
-		SELECT ROWNUM AS RANK,A.* FROM
-		  	(SELECT 
+		 SELECT  
+            RANK() OVER (PARTITION BY PLAN_START_DATE ORDER BY PLAN_START_DATE, (CASE WHEN
+			PLAN_STATE = 'Y' THEN 0 ELSE 1 END),PLAN_ENROLL_DATE ASC) AS COUNT,
 			PLAN_SEQ_NO,
 			TO_CHAR(PLAN_ENROLL_DATE,'YYYY-MM-DD') AS PLAN_ENROLL_DATE,
 			TO_CHAR(PLAN_START_DATE,'YYYY-MM-DD') AS PLAN_START_DATE,
 			TO_CHAR(PLAN_END_DATE,'YYYY-MM-DD') AS PLAN_END_DATE,
-			TO_CHAR(PLAN_UPDATE_DATE,'YYYY-MM-DD') AS PLAN_UPDATE_DATE,
+			TO_CHAR(PLAN_UPDATE_DATE,'YYYY-MM-DD') AS  PLAN_UPDATE_DATE,
 			PLAN_TITLE,
 			PLAN_CONTENT,
 			PLAN_STATE
 			FROM TB_PLAN 
-			WHERE PLAN_START_DATE BETWEEN TO_DATE(#{startDay},'YYYY-MM-DD')
-			AND TO_DATE(#{endDay},'YYYY-MM-DD') ORDER BY PLAN_START_DATE, (CASE WHEN
-			PLAN_STATE = 'Y' THEN 0 ELSE 1 END),PLAN_ENROLL_DATE ASC) A 
+			
+			WHERE 
+			
+			PLAN_START_DATE BETWEEN TO_DATE(#{startDay},'YYYY-MM-dd')
+			AND TO_DATE(#{endDay},'YYYY-MM-dd')
+			
+			OR
+			
+			PLAN_END_DATE BETWEEN TO_DATE(#{startDay},'YYYY-MM-dd')
+			AND TO_DATE(#{endDay},'YYYY-MM-dd')
 	</select>
 
-	<!-- 일정 카운트 조회 -->
-	<select id="planCount" resultType="wemb.mission.plan.vo.PlanCount" parameterType="string">
-		SELECT A.*,B.MONTHCOUNT FROM
-		(SELECT PLAN_START_DATE,COUNT(*) FROM TB_PLAN WHERE PLAN_START_DATE BETWEEN TO_DATE(#{startDay},'YYYY-MM-DD') 
-		AND TO_DATE(#{endDay},'yyyy-mm-dd') group by plan_start_date) A,
-		(SELECT COUNT(*)AS MONTHCOUNT FROM TB_PLAN WHERE PLAN_START_DATE BETWEEN TO_DATE(#{startDay},'YYYY-MM-DD') 
-		AND TO_DATE(#{endDay},'yyyy-mm-dd') ) B
+	<!-- 월별 카운트 조회-->
+	<select id="planMonthCount" resultType="int" parameterType="string">
+		
+		SELECT COUNT(*) AS MONTHCOUNT FROM TB_PLAN WHERE PLAN_START_DATE BETWEEN TO_DATE(#{startDay},'YYYY-MM-DD') 
+		AND TO_DATE(#{endDay},'yyyy-mm-dd') 
 	</select>
-
+	
+	<!-- 일별 카운트 조회 -->
+	<select id="planDayCount" resultType="wemb.mission.plan.vo.PlanCount" parameterType="string">
+		SELECT TO_CHAR(PLAN_START_DATE,'YYYY-MM-DD') AS PLAN_START_DATE,TO_CHAR(PLAN_END_DATE,'YYYY-MM-DD') AS PLAN_END_DATE, COUNT(*) AS COUNT FROM TB_PLAN 
+		where PLAN_START_DATE BETWEEN TO_DATE(#{startDay},'YYYY-MM-dd')
+			AND TO_DATE(#{endDay},'YYYY-MM-dd') GROUP BY PLAN_START_DATE,PLAN_END_DATE
+	</select>
+	
 	<!-- 일정 상세보기 -->
 	<select id="planView" parameterType="_int" resultType="wemb.mission.plan.vo.Plan">
 		SELECT * FROM TB_PLAN WHERE PLAN_SEQ_NO = #{no}
