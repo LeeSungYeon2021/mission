@@ -94,7 +94,7 @@
 								<i class="fas fa-times"></i>
 							</button>
 						</div>
-						<div class="modal-body">
+						<div class="modal-body" id="plan_modal_body">
 
 							<div class="input-group mb-3">
 								<div class="input-group-prepend">
@@ -131,7 +131,7 @@
 								<textarea id="plan_content" name="plan_content" class="form-control"></textarea>								
 							</div>
 						</div>
-						<div class="modal-footer">
+						<div class="modal-footer" id="plan_modal_footer">
 							<div class="btn-group btn-group-justified" role="group" aria-label="...">
 
 								<div class="btn-group" role="group">
@@ -154,4 +154,4 @@
 </section>
 
 <%@ include file="/WEB-INF/view/common/footer.jsp"%>
-<script src="/resources/js/index.js"></script>
+<script src="/resources/js/calendar.js"></script>

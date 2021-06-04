@@ -7,25 +7,17 @@
 
 <!-- 로컬환경 PATH값 저장 -->
 <c:set var="path" value="${pageContext.request.contextPath }"/>
+
+<!-- 폰트어썸 (아이콘) -->
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css">
 
+<!-- 부트스트랩 / JQUERY -->
 <link rel="stylesheet" href="//unpkg.com/bootstrap@4/dist/css/bootstrap.min.css">
 <script src='//unpkg.com/jquery@3/dist/jquery.min.js'></script>
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script src='//unpkg.com/popper.js@1/dist/umd/popper.min.js'></script>
-<script src='//unpkg.com/bootstrap@4/dist/js/bootstrap.min.js'></script>
-<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
-<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">  
-
-
- <!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
- 
-<!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script> 
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js"></script> 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/css/tempusdominus-bootstrap-4.min.css" />  --> 
-
-
+<script src='//unpkg.com/bootstrap@4/dist/js/bootstrap.min.js'></script>  
 
 <!DOCTYPE html>
 <html>
@@ -33,6 +25,5 @@
 <meta charset="UTF-8">
 </head>
 <body>
-	<header>
-		
+	<header>		
 	</header>

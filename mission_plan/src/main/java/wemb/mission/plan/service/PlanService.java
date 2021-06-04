@@ -22,5 +22,5 @@ public interface PlanService {
 	//일정 삭제
 	int planDelete(int no) ;
 	//일정 중요도 카운트
-	int planState(String replaceDay);
+	int planState(String searchDay);
 }

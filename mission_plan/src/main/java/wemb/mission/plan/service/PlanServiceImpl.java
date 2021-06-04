@@ -52,9 +52,9 @@ public class PlanServiceImpl implements PlanService {
 	}
 
 	@Override
-	public int planState(String replaceDay) {
+	public int planState(String searchDay) {
 		// TODO Auto-generated method stub
-		return planDao.planState(replaceDay);
+		return planDao.planState(searchDay);
 	}
 
 	@Override

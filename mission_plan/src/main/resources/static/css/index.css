@@ -10,7 +10,7 @@
 #currentYear {
 	font-weight: bold;
 }
-
+ 
 #currentMonth {
 	font-weight: bold;
 }
@@ -38,7 +38,7 @@
 	height: 130px;
 }
 
-#tbl_plan>tbody>tr>td:last-child>input {
+#tbl_plan>tbody>tr>td:nth-child(n+7)>input {
 	color: blue;
 }
 

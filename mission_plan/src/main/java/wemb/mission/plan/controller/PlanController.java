@@ -1,112 +1,113 @@
 package wemb.mission.plan.controller;
 
-import java.util.Calendar;
+
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import wemb.mission.plan.service.PlanService;
 import wemb.mission.plan.vo.Plan;
-import wemb.mission.plan.vo.PlanCount;
 
 @Controller
 public class PlanController {
+	
+	private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-//	private final Logger log = LoggerFactory.getLogger(this.getClass());
-//
-//	@Autowired
-//	private PlanService planService;
-//
-//	@RequestMapping(value = "/calendars")
-//	public ModelAndView calendar(Model m, String year, String month) {
-//
-//		int parseYear = 0;
-//		int parseMonth = 0;
-//		Calendar cal = Calendar.getInstance();
-//
-//		if (year != null && month != null) {
-//
-//			parseYear = Integer.parseInt(year);
-//			parseMonth = Integer.parseInt(month);
-//			cal.set(Calendar.YEAR, parseYear);
-//			cal.set(Calendar.MONTH, parseMonth - 1);
-//
-//		} else {
-//			parseYear = cal.get(Calendar.YEAR);
-//			parseMonth = cal.get(Calendar.MONTH) + 1;
-//
-//		}
-//
-//		if ((parseYear % 4 == 0 && parseYear % 100 != 0) || parseYear % 400 == 0) {
-//			// 2월 29일
-//			System.out.println("윤년");
-//		} else {
-//			// 2월 28일
-//			System.out.println("평년");
-//		}
-//
-//		cal.set(Calendar.DAY_OF_MONTH, 1);
-//
-//		int firstDay = cal.get(Calendar.DAY_OF_WEEK);
-//		int lastDay = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
-//
-//		int[] day = new int[firstDay + lastDay];
-//		int count = 1;
-//		for (int i = 0; i < firstDay + lastDay; i++) {
-//			if (i < (firstDay - 1)) {
-//				day[i] = 0;
-//			} else {
-//				if (count <= lastDay) {
-//					day[i] = count;
-//					count++;
-//				}
-//			}
-//		}
-//		String[] dataKey = new String[lastDay];
-//		for (int i = 0; i < dataKey.length ; i++) {
-//			if (parseMonth < 10 && i > 0) {
-//				dataKey[i] = parseYear + "-0" + parseMonth;
-//			}
-//			if ( i < 10) {
-//				log.info("들어옴?");
-//				dataKey[i] += "-0" + (i+1);
-//			} else {
-//				dataKey[i] = parseYear + "-0" + parseMonth + "-" + (i+1);
-//				
-//			}
-//		}
-//
-//		for (int i = 0; i < dataKey.length; i++) {
-//			log.info("dataKey : {} ", dataKey[i]);
-//		}
-//		String fDay = parseYear + "-" + parseMonth + "-01";
-//		String lDay = parseYear + "-" + parseMonth + "-" + lastDay;
-//
-//		List<Plan> list = planService.planSelect(fDay, lDay);
-//		List<PlanCount> pc = planService.planCount("21/05");
-//		for (Plan p : list) {
-//			System.out.println("list : " + list);
-//
-//		}
-//		ModelAndView mv = new ModelAndView();
-//
-//		mv.addObject("parseYear", parseYear);
-//		mv.addObject("parseMonth", parseMonth);
-//		mv.addObject("firstDay", firstDay);
-//		mv.addObject("lastDay", lastDay);
-//		mv.addObject("day", day);
-//		mv.addObject("list", list);
-//		mv.addObject("pc", pc);
-//		mv.addObject("dataKey", dataKey);
-//		mv.setViewName("calendar");
-//
-//		return mv;
-//	}
+	@Autowired
+	private PlanService planService;
+	
+	@RequestMapping(value = "/calendar")
+	public String calendar() {
 
+		return "/calendar/calendar";
+	}
+	
+	// 일정 카운트
+	@RequestMapping(value = "/plan_count", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String,Object> planCount(String startDay,String endDay) {
+
+		int monthCount = planService.planMonthCount(startDay,endDay);
+		
+		Map<String,Object> map = new HashMap();
+		map.put("monthCount", monthCount);
+		
+		return map;
+	}
+
+	// 일정 조회(월 전체)
+	@RequestMapping(value = "/plan_search", method = RequestMethod.POST)
+	@ResponseBody
+	public List<Plan>  planSelect(String startDay, String endDay) {
+		
+		List<Plan> list = planService.planSelect(startDay, endDay);
+		
+		return list;
+
+	}
+
+	// 일정 등록
+	@RequestMapping(value = "/plan_enroll", method = RequestMethod.POST)
+	public String planEnroll(Plan plan) {
+		String msg = "";
+		log.info("plan : {} ",plan);
+		int result = planService.planInsert(plan);
+
+		return "redirect:/calendar";
+	}
+
+	// 일정 수정
+	@RequestMapping(value = "/plan_edit", method = RequestMethod.POST)	
+	public String planUpdate(Plan plan) {		
+			
+		int result = planService.planUpdate(plan);		
+
+		return "redirect:/calendar";
+	}
+
+	// 일정 삭제
+	@RequestMapping(value = "/plan_delete", method = RequestMethod.POST)
+	@ResponseBody
+	public String planDelete(int no) {
+				
+		String msg = "";
+		int result = planService.planDelete(no);
+
+		if (result != 0) {
+			msg = "삭제 되었습니다.";
+		} else {
+			msg = "삭제를 실패하였습니다.";
+		}
+
+		return msg;
+	}
+
+	// 일정 상세보기
+	@RequestMapping(value = "/plan_viewDetail", method = RequestMethod.POST)
+	@ResponseBody
+	public Plan planEnroll(int no) {
+
+		Plan p = planService.planView(no);
+
+		return p;
+	}
+	
+	//일정 상태값 조회
+	@RequestMapping(value = "/plan_state", method = RequestMethod.POST)
+	@ResponseBody
+	public int planState_Select(String searchDay) {
+		
+		int result = planService.planState(searchDay);
+
+		return result;
+	}
 }

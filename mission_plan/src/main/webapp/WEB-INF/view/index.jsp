@@ -7,8 +7,7 @@
 	src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
 <%@ include file="/WEB-INF/view/common/header.jsp"%>
 <section>
-	<a href="/calendar">달력보기</a>
+	<a style="font-size:30px; font-weight:bold;"href="/calendar">달력보기</a>
 </section>
 
 <%@ include file="/WEB-INF/view/common/footer.jsp"%>
-<script src="/resources/js/index.js"></script>

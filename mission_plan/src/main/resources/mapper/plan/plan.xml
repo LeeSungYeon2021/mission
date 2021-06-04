@@ -8,15 +8,15 @@
 	<!-- 일정 등록 -->
 	<insert id="planInsert" parameterType="wemb.mission.plan.vo.Plan">
 		INSERT INTO TB_PLAN
-		VALUES(SEQ_PLAN.NEXTVAL,SYSDATE,#{plan_start_date},#{plan_end_date},SYSDATE,#{plan_title},#{plan_content},#{plan_state})
+		VALUES(SEQ_PLAN.NEXTVAL,SYSDATE,TO_DATE(#{plan_start_date},'YYYY-MM-DD'),TO_DATE(#{plan_end_date},'YYYY-MM-DD'),SYSDATE,#{plan_title},#{plan_content},#{plan_state})
 	</insert>
 
 	<!-- 일정 상태 카운트 조회 -->
-	<select id="planState" resultType="_int">
+	<select id="planState" resultType="_int" parameterType="string">
 		SELECT COUNT(*) FROM TB_PLAN
-		WHERE PLAN_STATE = 'Y' AND PLAN_START_DATE LIKE
-		'%'||#{replaceDay}||'%'
+		WHERE PLAN_STATE = 'Y' AND PLAN_START_DATE = TO_DATE(#{searchDay},'YYYY-MM-DD')
 	</select>
+	
 	<!-- 해당 월 일정 조회 -->
 	<select id="planSelect" resultType="wemb.mission.plan.vo.Plan" parameterType="string">
 		
@@ -71,12 +71,12 @@
 		PLAN_UPDATE_DATE = SYSDATE ,
 		PLAN_TITLE = #{plan_title} ,
 		PLAN_CONTENT = #{plan_content} ,
-		PLAN_STATE = #{plan_state} WHERE PLAN_SEQ_NO = #{plan_seq_no}
+		PLAN_STATE = #{plan_state} 
+		WHERE PLAN_SEQ_NO = #{plan_seq_no}
 	</update>
 
 	<!-- 일정 삭제 -->
 	<delete id="planDelete" parameterType="_int">
-		DELETE FROM TB_PLAN WHERE
-		PLAN_SEQ_NO = #{plan_seq_no}
+		DELETE FROM TB_PLAN WHERE PLAN_SEQ_NO = #{plan_seq_no}
 	</delete>
 </mapper>
