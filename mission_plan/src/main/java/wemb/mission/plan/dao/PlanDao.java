@@ -1,11 +1,12 @@
 package wemb.mission.plan.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
 import wemb.mission.plan.vo.Plan;
-import wemb.mission.plan.vo.PlanCount;
+
 
 @Mapper
 public interface PlanDao {
@@ -17,5 +18,5 @@ public interface PlanDao {
 	int planUpdate(Plan plan);
 	int planDelete(int no);
 	int planState(String searchDay);
-	List<PlanCount> planDayCount(String startDay, String endDay);
+	List<Map<String, Object>> planDayCount(String startDay, String endDay);
 }

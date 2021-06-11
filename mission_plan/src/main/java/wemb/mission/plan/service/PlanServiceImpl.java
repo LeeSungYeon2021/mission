@@ -1,6 +1,7 @@
 package wemb.mission.plan.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -58,7 +59,7 @@ public class PlanServiceImpl implements PlanService {
 	}
 
 	@Override
-	public List<PlanCount> planDayCount(String startDay, String endDay) {
+	public List<Map<String, Object>> planDayCount(String startDay, String endDay) {
 		// TODO Auto-generated method stub
 		return planDao.planDayCount(startDay,endDay);
 	}

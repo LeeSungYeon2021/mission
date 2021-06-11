@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 public class Plan {
 	
 	private int count;
-	private int plan_seq_no;
+	private int plan_no;
 	private String plan_enroll_date;	
 	private String plan_start_date;	
 	private String plan_end_date;
