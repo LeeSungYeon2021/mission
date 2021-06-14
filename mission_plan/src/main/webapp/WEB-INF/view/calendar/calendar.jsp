@@ -10,10 +10,18 @@
 	<div class="container">
 		<div class="tbl_div">
 			<table class="table " id="tbl_plan">
+				<colgroup>
+					<col width="13%">
+					<col width="13%">
+					<col width="13%">
+					<col width="13%">
+					<col width="13%">
+					<col width="13%">
+					<col width="13%">
+				</colgroup>
 				<thead>
 					<tr align='right'>
 						<td></td>
-
 						<td align='right'>
 							<button type="button" id="prevBtn">
 								<i class="fa fa-angle-left fa-2x"></i>

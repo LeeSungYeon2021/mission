@@ -31,7 +31,7 @@
 	<select id="planSelect" resultType="wemb.mission.plan.vo.Plan"
 		parameterType="string">
 
-		SELECT
+	<!-- 	SELECT
 		PLAN_NO,
 		PLAN_ENROLL_DATE,
 		PLAN_START_DATE,
@@ -63,7 +63,38 @@
 		(PLAN_END_DATE >=
 		#{startDay} AND PLAN_END_DATE <![CDATA[>=]]>
 		#{endDay})
-		ORDER BY PLAN_ENROLL_DATE)
+		ORDER BY PLAN_ENROLL_DATE) -->
+
+  SELECT 
+        TP.PLAN_ENROLL_DATE,
+        TP.PLAN_START_DATE,
+        TP.PLAN_END_DATE,
+        TP.PLAN_NO,
+        TP.PLAN_TITLE,
+        TP.PLAN_STATE,
+        TMP.DAYS,
+        RANK() OVER(PARTITION BY TMP.DAYS ORDER BY PLAN_STATE DESC PLAN_ENROLL_DATE) AS RANK
+      FROM
+      (SELECT TO_CHAR(TO_DATE(#{startDay},'YYYYMMDD')+LEVEL-1,'YYYYMMDD') AS DAYS FROM DUAL CONNECT BY LEVEL <![CDATA[<=]]> TO_DATE(#{endDay}, 'YYYYMMDD') - TO_DATE(#{startDay},'YYYYMMDD')+1)TMP ,
+        TB_PLAN TP
+      
+      WHERE
+      
+      (TMP.DAYS = SUBSTR(TP.PLAN_START_DATE,1,8) OR TMP.DAYS = SUBSTR(TP.PLAN_END_DATE,1,8))
+      
+      GROUP BY 
+        
+        TMP.DAYS,
+        TP.PLAN_TITLE,
+        TP.PLAN_NO,
+        TP.PLAN_ENROLL_DATE,
+        TP.PLAN_START_DATE,
+        TP.PLAN_END_DATE,
+        TP.PLAN_STATE
+        
+        
+        
+        ORDER BY DAYS
 	</select>
 
 	<!-- 월별 카운트 조회 -->

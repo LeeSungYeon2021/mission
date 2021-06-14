@@ -9,7 +9,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Plan {
 	
-	private int count;
+	private int rank;
+	private String days;
 	private int plan_no;
 	private String plan_enroll_date;	
 	private String plan_start_date;	

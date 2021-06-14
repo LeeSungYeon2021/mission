@@ -100,7 +100,6 @@ $.createCalendar = function() {
 		}
 		//전체 td 생성
 		let $td = $("<td>");
-
 		//td 공란채우기
 		if (i < g_firstDay) {
 			$td.addClass('tdEmpty_' + i);
@@ -169,18 +168,12 @@ $.searchPlanCount = function() {
 		method: 'post',
 		data: { startDay: g_startDay, endDay: g_endDay },
 		success: function(data) {
-			console.log('list Data', data);
-			let l_startCount = 0;
-			let l_endCount = 0;
-			var arr = new Array();
-
 
 			for (let i = 0; i < (data.length - 1); i++) {
 
-
 				$.each($("td"), function() {
 					if (data[i].DAYS == $(this).data('day')) {
-						if (data[i].CONTENT_COUNT > 3) {
+						if (data[i].CONTENT_COUNT >= 3) {
 							$(this).find('span').css({
 								'color': 'red',
 								'font-weight': 'bold'
@@ -188,7 +181,6 @@ $.searchPlanCount = function() {
 						}
 						$(this).find('span').html(data[i].CONTENT_COUNT + '개');
 					}
-
 				});
 			}
 			if (data[data.length - 1].monthCount != 0) {
@@ -236,84 +228,46 @@ $.searchPlan = function() {
 					let subEndD = data[i].plan_end_date.substring(6, 8).replaceAll("0", "");
 					let reEndDay = [subEndM, subEndD].join('/');
 
-					$startDate = $("<li></li>");
-					$startDate.attr('data-no', data[i].plan_no);
-
-					$endDate = $("<li></li>");
-					$endDate.attr('data-no', data[i].plan_no);
-
+					$planDate = $("<li></li>");
+					$planDate.attr('data-no', data[i].plan_no);
 
 					//일반 - 중요 체크
 					if ((data[i].plan_state).trim() === 'Y') {
 
-						$startDate.addClass('plan_title plan_state_Y list-group-item');
-						$endDate.addClass('plan_title plan_state_Y list-group-item');
+						$planDate.addClass('plan_title plan_state_Y list-group-item');
 
 					} else {
 
-						$startDate.addClass('plan_title plan_state_N list-group-item');
-						$endDate.addClass('plan_title plan_state_N list-group-item');
+						$planDate.addClass('plan_title plan_state_N list-group-item');
 					}
 
 					//이전날짜 처리
-					if (endDate < g_today) {
+					if (data[i].days < g_today) {
 
-						$startDate.addClass('pass_plan');
-						$endDate.addClass('pass_plan');
+						$planDate.addClass('pass_plan');
 					}
 
-					$startDate.attr({
-						'data-toggle': 'tooltip',
-						'data-placement': 'right',
-						'title': data[i].plan_title + '(' + reStartDay + '~' + reEndDay + ')'
-					});
-
-					$endDate.attr({
+					$planDate.attr({
 						'data-toggle': 'tooltip',
 						'data-placement': 'right',
 						'title': data[i].plan_title + '(' + reStartDay + '~' + reEndDay + ')'
 					});
 
 					if (startDate != endDate) {
-						$startDate.append(data[i].plan_title + '(' + reStartDay + '~' + reEndDay + ')');
-						$endDate.append(data[i].plan_title + '(' + reStartDay + '~' + reEndDay + ')');
+						$planDate.append(data[i].plan_title + '(' + reStartDay + '~' + reEndDay + ')');
 					} else {
-						$startDate.append(data[i].plan_title);
-						$endDate.append(data[i].plan_title);
+						$planDate.append(data[i].plan_title);
 					}
 
 
 
 					$.each($("td"), function() {
 
-
 						let reDataDay = $(this).data('day');
 
-						if (data[i].count <= 4) {
-
-							//시작일 == td 'data-day' 비교
-							if (reDataDay == startDate) {
-								//중요일정 최상위 처리
-								if (data[i].count == 1) {
-									$startDate.prependTo($(this).find('.ulDay'));
-
-								}
-								else {
-									$(this).find('ul').append($startDate);
-								}
-
-							}
-
-						} else {
-							//마감일 == td 'data-day' 비교
-							if (reDataDay == endDate) {
-								//하루일정 중복append 처리
-								if (startDate != endDate) {
-									$(this).find('ul').append($endDate);
-								}
-							}
+						if (reDataDay == data[i].days) {
+							$(this).find('ul').append($planDate);
 						}
-						console.log('date test',$(this).find('ulDay').children().length);
 					});
 				}
 			}
@@ -365,9 +319,6 @@ $("#nextBtn").on('click', function() {
 $(document).on('click', '.inputDay', function(e) {
 
 	let targetVal = $(e.target).parent().data('day');
-	console.log('targetVal', targetVal);
-	console.log('g_today', g_today);
-	console.log('type', typeof (g_today));
 	$.ajax({
 		url: '/plan_state',
 		data: { searchDay: targetVal },
