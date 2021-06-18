@@ -24,4 +24,6 @@ public interface PlanService {
 	int planDelete(int no) ;
 	//일정 중요도 카운트
 	int planState(String searchDay);
+	//일별 일정 리스트 조회
+	List<Plan> planDayList(String searchDay);
 }

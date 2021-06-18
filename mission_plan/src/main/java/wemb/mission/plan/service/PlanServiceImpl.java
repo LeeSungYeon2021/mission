@@ -63,6 +63,12 @@ public class PlanServiceImpl implements PlanService {
 		// TODO Auto-generated method stub
 		return planDao.planDayCount(startDay,endDay);
 	}
+
+	@Override
+	public List<Plan> planDayList(String searchDay) {
+		// TODO Auto-generated method stub
+		return planDao.planDayList(searchDay);
+	}
 	
 	
 	

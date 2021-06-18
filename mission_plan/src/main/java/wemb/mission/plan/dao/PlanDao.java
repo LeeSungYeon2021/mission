@@ -19,4 +19,5 @@ public interface PlanDao {
 	int planDelete(int no);
 	int planState(String searchDay);
 	List<Map<String, Object>> planDayCount(String startDay, String endDay);
+	List<Plan> planDayList(String searchDay);
 }

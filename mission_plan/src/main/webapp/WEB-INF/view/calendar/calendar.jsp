@@ -9,6 +9,7 @@
 <section style="">
 	<div class="container">
 		<div class="tbl_div">
+			<!-- 달력 tbl -->
 			<table class="table " id="tbl_plan">
 				<colgroup>
 					<col width="13%">
@@ -72,36 +73,13 @@
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<div style="background-color:lightgray;" class="modal-header" id="planList_header">
-						<h5>전체 일정</h5>		
-						<h4>6월11일</h4>				
+						<h5></h5>											
 						<button type="button" class="close" data-dismiss="modal"
 							aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
 					</div>
-					<div class="modal-body" id="planList_body"></div>
-					<table class="table">						
-						<tr>
-							<td>12시 - 13시</td>
-							<td>점심먹기</td>
-						</tr>
-						<tr>
-							<td>12시 - 13시</td>
-							<td>출근하기</td>
-						</tr>
-						<tr>
-							<td>12시 - 13시</td>
-							<td>퇴근하기</td>
-						</tr>
-						<tr>
-							<td>12시 - 13시</td>
-							<td>점심먹기</td>
-						</tr>
-						<tr>
-							<td>22시 ~ </td>
-							<td>점심먹기</td>
-						</tr>
-					</table>
+					<div class="modal-body" id="planList_body"></div>					
 					<div class="modal_footer" id="planList_footer"></div>
 				</div>
 			</div>
@@ -150,7 +128,7 @@
 								</div>
 								<input type="hidden" name="plan_no" id="plan_no"
 									value="0"> <input type="text" class="form-control"
-									name="plan_title" id="plan_title">
+									name="" id="plan_title">
 							</div>
 
 
@@ -229,8 +207,9 @@
 									<span class="input-group-text">메모</span>
 								</div>
 								<textarea id="plan_content" name="plan_content"
-									class="form-control"></textarea>
+									class="form-control"></textarea>									
 							</div>
+								<span style="margin-left:60px;" id="fontLength">(0/50)</span>	
 						</div>
 						<div class="modal-footer" id="plan_modal_footer">
 							<div class="btn-group btn-group-justified" role="group"

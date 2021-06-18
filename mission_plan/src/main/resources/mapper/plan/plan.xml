@@ -8,7 +8,7 @@
 	<!-- 일정 등록 -->
 	<insert id="planInsert"
 		parameterType="wemb.mission.plan.vo.Plan">
-		INSERT INTO 
+		INSERT INTO
 		TB_PLAN
 		VALUES
 		(PLAN_SEQ.NEXTVAL,TO_CHAR(SYSDATE,'yyyymmddhh24miss'),#{plan_start_date},#{plan_end_date},TO_CHAR(SYSDATE,'yyyymmddhh24miss'),#{plan_title},#{plan_content},#{plan_state})
@@ -17,84 +17,58 @@
 	<!-- 일정 상태 카운트 조회 -->
 	<select id="planState" resultType="_int" parameterType="string">
 		SELECT
-		COUNT(*)
+		COUNT(*) AS STATE_COUNT
 		FROM TB_PLAN
-		
+
 		WHERE
-		
+
 		PLAN_STATE = 'Y'
 		AND
+		(
 		PLAN_START_DATE LIKE '%'||#{searchDay}||'%'
+		OR
+		PLAN_END_DATE
+		LIKE '%'||#{searchDay}||'%'
+		)
 	</select>
 
 	<!-- 해당 월 일정 조회 -->
 	<select id="planSelect" resultType="wemb.mission.plan.vo.Plan"
 		parameterType="string">
 
-	<!-- 	SELECT
-		PLAN_NO,
-		PLAN_ENROLL_DATE,
-		PLAN_START_DATE,
-		PLAN_END_DATE,
-		PLAN_TITLE,
-		PLAN_STATE,
-		RANK() OVER (PARTITION BY
-		SUBSTR(PLAN_START_DATE,1,8)
-		ORDER BY PLAN_STATE DESC,PLAN_ENROLL_DATE) AS COUNT
-		
+		SELECT
+		TP.PLAN_ENROLL_DATE,
+		TP.PLAN_START_DATE,
+		TP.PLAN_END_DATE,
+		TP.PLAN_NO,
+		TP.PLAN_TITLE,
+		TP.PLAN_STATE,
+		TMP.DAYS,
+		RANK() OVER(PARTITION BY TMP.DAYS ORDER BY PLAN_STATE DESC,PLAN_ENROLL_DATE)
+		AS DAY_RANK
 		FROM
-		(SELECT
-		PLAN_NO,
-		PLAN_ENROLL_DATE,
-		PLAN_START_DATE,
-		PLAN_END_DATE,
-		PLAN_TITLE,
-		PLAN_STATE
-		FROM TB_PLAN
+		(SELECT TO_CHAR(TO_DATE(#{startDay},'YYYYMMDD')+LEVEL-1,'YYYYMMDD') AS DAYS
+		FROM DUAL CONNECT BY LEVEL <![CDATA[<=]]>
+		TO_DATE(#{endDay}, 'YYYYMMDD') - TO_DATE(#{startDay},'YYYYMMDD')+1)TMP
+		,
+		TB_PLAN TP
 
 		WHERE
 
-		(PLAN_START_DATE >=
-		#{startDay} AND PLAN_START_DATE <![CDATA[<=]]>
-		#{endDay})
+		(TMP.DAYS = SUBSTR(TP.PLAN_START_DATE,1,8) OR TMP.DAYS =
+		SUBSTR(TP.PLAN_END_DATE,1,8))
 
-		OR
+		GROUP BY
 
-		(PLAN_END_DATE >=
-		#{startDay} AND PLAN_END_DATE <![CDATA[>=]]>
-		#{endDay})
-		ORDER BY PLAN_ENROLL_DATE) -->
+		TMP.DAYS,
+		TP.PLAN_TITLE,
+		TP.PLAN_NO,
+		TP.PLAN_ENROLL_DATE,
+		TP.PLAN_START_DATE,
+		TP.PLAN_END_DATE,
+		TP.PLAN_STATE
 
-  SELECT 
-        TP.PLAN_ENROLL_DATE,
-        TP.PLAN_START_DATE,
-        TP.PLAN_END_DATE,
-        TP.PLAN_NO,
-        TP.PLAN_TITLE,
-        TP.PLAN_STATE,
-        TMP.DAYS,
-        RANK() OVER(PARTITION BY TMP.DAYS ORDER BY PLAN_STATE DESC PLAN_ENROLL_DATE) AS RANK
-      FROM
-      (SELECT TO_CHAR(TO_DATE(#{startDay},'YYYYMMDD')+LEVEL-1,'YYYYMMDD') AS DAYS FROM DUAL CONNECT BY LEVEL <![CDATA[<=]]> TO_DATE(#{endDay}, 'YYYYMMDD') - TO_DATE(#{startDay},'YYYYMMDD')+1)TMP ,
-        TB_PLAN TP
-      
-      WHERE
-      
-      (TMP.DAYS = SUBSTR(TP.PLAN_START_DATE,1,8) OR TMP.DAYS = SUBSTR(TP.PLAN_END_DATE,1,8))
-      
-      GROUP BY 
-        
-        TMP.DAYS,
-        TP.PLAN_TITLE,
-        TP.PLAN_NO,
-        TP.PLAN_ENROLL_DATE,
-        TP.PLAN_START_DATE,
-        TP.PLAN_END_DATE,
-        TP.PLAN_STATE
-        
-        
-        
-        ORDER BY DAYS
+		ORDER BY TP.PLAN_ENROLL_DATE,DAYS
 	</select>
 
 	<!-- 월별 카운트 조회 -->
@@ -102,11 +76,11 @@
 		parameterType="string">
 
 		SELECT COUNT(*) AS MONTHCOUNT
-		
+
 		FROM TB_PLAN
-		
+
 		WHERE
-		
+
 		PLAN_START_DATE <![CDATA[>=]]>
 		#{startDay} AND PLAN_START_DATE <![CDATA[<=]]>
 		#{endDay}
@@ -115,22 +89,23 @@
 	<!-- 일별 카운트 조회 -->
 	<select id="planDayCount" resultType="java.util.HashMap"
 		parameterType="string">
-		SELECT TMP.DAYS AS DAYS,COUNT(*) AS CONTENT_COUNT 
+		SELECT TMP.DAYS AS DAYS,COUNT(*) AS CONTENT_COUNT
 		FROM
-		
+
 		(SELECT
 		TO_CHAR(TO_DATE(#{startDay},'YYYYMMDD')+LEVEL-1,'YYYYMMDD') AS DAYS
-		
-		FROM DUAL 
+
+		FROM DUAL
 		CONNECT BY LEVEL <![CDATA[<=]]>
-		TO_DATE(#{endDay}, 'YYYYMMDD') - TO_DATE(#{startDay},'YYYYMMDD')+1)TMP ,TB_PLAN TP
-		
+		TO_DATE(#{endDay}, 'YYYYMMDD') - TO_DATE(#{startDay},'YYYYMMDD')+1)TMP
+		,TB_PLAN TP
+
 		WHERE
-		
+
 		TMP.DAYS = SUBSTR(TP.plan_start_date,1,8)
-		
+
 		OR
-		
+
 		TMP.DAYS = SUBSTR(TP.plan_END_date,1,8)
 		GROUP BY TMP.DAYS
 		ORDER BY DAYS
@@ -139,13 +114,53 @@
 	<!-- 일정 상세보기 -->
 	<select id="planView" parameterType="_int"
 		resultType="wemb.mission.plan.vo.Plan">
-		SELECT * FROM TB_PLAN WHERE PLAN_NO = #{no}
+		SELECT
+
+		PLAN_NO,
+		PLAN_ENROLL_DATE,
+		PLAN_START_DATE,
+		PLAN_END_DATE,
+		PLAN_UPDATE_DATE,
+		PLAN_TITLE,
+		PLAN_CONTENT,
+		PLAN_STATE
+
+		FROM TB_PLAN
+
+		WHERE PLAN_NO = #{no}
 	</select>
 
+	<!-- 일별 일정 리스트 조회 -->
+	<select id="planDayList" parameterType="string"
+		resultType="wemb.mission.plan.vo.Plan">
+		SELECT
+
+		PLAN_NO,
+		PLAN_ENROLL_DATE,
+		PLAN_START_DATE,
+		PLAN_END_DATE,
+		PLAN_UPDATE_DATE,
+		PLAN_TITLE,
+		PLAN_CONTENT,
+		PLAN_STATE
+		FROM TB_PLAN
+
+		WHERE
+		(
+		PLAN_START_DATE LIKE '%'||#{searchDay}||'%'
+
+		OR
+
+		PLAN_END_DATE LIKE '%'||#{searchDay}||'%'
+		)
+
+		ORDER BY PLAN_START_DATE ASC
+	</select>
 	<!-- 일정 수정 -->
 	<update id="planUpdate"
 		parameterType="wemb.mission.plan.vo.Plan">
 		UPDATE TB_PLAN SET
+
 		PLAN_START_DATE = #{plan_start_date} ,
 		PLAN_END_DATE = #{plan_end_date} ,
 		PLAN_UPDATE_DATE =
@@ -153,8 +168,8 @@
 		PLAN_TITLE = #{plan_title} ,
 		PLAN_CONTENT = #{plan_content},
 		PLAN_STATE = #{plan_state}
-		WHERE PLAN_NO
-		= #{plan_no}
+
+		WHERE PLAN_NO = #{plan_no}
 	</update>
 
 	<!-- 일정 삭제 -->
