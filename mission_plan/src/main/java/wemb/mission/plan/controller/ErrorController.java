@@ -10,7 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-public class ErrorController extends RuntimeException{
+public class ErrorController {
 	
 	
 	//에러페이지 전환

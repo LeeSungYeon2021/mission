@@ -11,28 +11,18 @@
 		<div class="tbl_div">
 			<!-- 달력 tbl -->
 			<table class="table " id="tbl_plan">
-				<colgroup>
-					<col width="13%">
-					<col width="13%">
-					<col width="13%">
-					<col width="13%">
-					<col width="13%">
-					<col width="13%">
-					<col width="13%">
-				</colgroup>
+
 				<thead>
 					<tr align='right'>
 						<td></td>
-						<td align='right'>
+						<td>
 							<button type="button" id="prevBtn">
 								<i class="fa fa-angle-left fa-2x"></i>
 							</button>
 						</td>
-						<td align='center'><input type="text" id="currentYear"
-							readonly></td>
-						<td align='center'><input type="text" id="currentMonth"
-							readonly></td>
-						<td align='left'>
+						<td><input type="text" id="currentYear" readonly></td>
+						<td><input type="text" id="currentMonth" readonly></td>
+						<td align='center'>
 							<button type="button" id="nextBtn">
 								<i class="fa fa-angle-right fa-2x"></i>
 							</button>
@@ -50,7 +40,7 @@
 						<td><span id="plan_monthCount"></span></td>
 
 					</tr>
-					<tr>
+					<tr class="tt">
 						<td style="color: red;">일</td>
 						<td>월</td>
 						<td>화</td>
@@ -72,14 +62,14 @@
 		<div class="modal" id="planList_modal" tabindex="-1" role="dialog">
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
-					<div style="background-color:lightgray;" class="modal-header" id="planList_header">
-						<h5></h5>											
+					<div class="modal-header" id="planList_header">
+						<h5></h5>
 						<button type="button" class="close" data-dismiss="modal"
 							aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
 					</div>
-					<div class="modal-body" id="planList_body"></div>					
+					<div class="modal-body" id="planList_body"></div>
 					<div class="modal_footer" id="planList_footer"></div>
 				</div>
 			</div>
@@ -106,32 +96,37 @@
 						<div class="modal-body" id="plan_modal_body">
 
 							<div class="input-group mb-3">
-								<div class="input-group-prepend">
+								<div class="input-group-prepend required">
 									<span class="input-group-text">구분</span>
 								</div>
-							
-								<div style="margin-top:10px;margin-left:30px;">
-									<label><input class="plan_state" id="plan_state_N" style="width:20px;height:15px;margin-top:5px;" type="radio" name="plan_state" value="N">일반</label>
+
+								<div style="margin-top: 10px; margin-left: 30px;">
+
+									<input class="plan_state" id="plan_state_N"
+										style="width: 20px; height: 15px; margin-top: 5px;"
+										type="radio" name="plan_state" value="N"> <label
+										for="plan_state_N">일반</label>
 								</div>
-								
-								<div style="margin-top:10px;margin-left:30px;">
-									<label><input class="plan_state" id="plan_state_Y" style="width:20px;height:15px;margin-top:5px;" type="radio" name="plan_state" value="Y">중요</label>
+
+								<div style="margin-top: 10px; margin-left: 30px;">
+
+									<input class="plan_state" id="plan_state_Y"
+										style="width: 20px; height: 15px; margin-top: 5px;"
+										type="radio" name="plan_state" value="Y"> <label
+										for="plan_state_Y">중요</label>
+
 								</div>
-								
-								
-								
+
 							</div>
 
 							<div class="input-group mb-3">
 								<div class="input-group-prepend">
 									<span class="input-group-text">제목</span>
 								</div>
-								<input type="hidden" name="plan_no" id="plan_no"
-									value="0"> <input type="text" class="form-control"
-									name="" id="plan_title">
+
+								<input type="hidden" name="plan_no" id="plan_no" value="0">
+								<input type="text" class="form-control" name="plan_title" id="plan_title" placeholder="">
 							</div>
-
-
 
 							<div class="input-group mb-3">
 								<div class="input-group-prepend">
@@ -143,38 +138,11 @@
 										class="form-control" id="plan_end_date" type="date"
 										name="plan_end_date">
 								</div>
-								<div>
-									<select id="plan_start_time" class="form-control" name="startTime">
-										<option value="0000">해당없음</option>
-										<option value="2400">오전 12:00</option>
-										<option value="0100">오전 1:00</option>
-										<option value="0200">오전 2:00</option>
-										<option value="0300">오전 3:00</option>
-										<option value="0400">오전 4:00</option>
-										<option value="0500">오전 5:00</option>
-										<option value="0600">오전 6:00</option>
-										<option value="0700">오전 7:00</option>
-										<option value="0800">오전 8:00</option>
-										<option value="0900">오전 9:00</option>
-										<option value="1000">오전 10:00</option>
-										<option value="1100">오전 11:00</option>
-										<option value="1200">오후 12:00</option>
-										<option value="1300">오후 1:00</option>
-										<option value="1400">오후 2:00</option>
-										<option value="1500">오후 3:00</option>
-										<option value="1600">오후 4:00</option>
-										<option value="1700">오후 5:00</option>
-										<option value="1800">오후 6:00</option>
-										<option value="1900">오후 7:00</option>
-										<option value="2000">오후 8:00</option>
-										<option value="2100">오후 9:00</option>
-										<option value="2200">오후 10:00</option>
-										<option value="2300">오후 11:00</option>										
-									</select> 
 
-									<select id="plan_end_time" class="form-control" name="endTime">
-										<option value="0000">해당없음</option>
-										<option value="2400">오전 12:00</option>
+								<div>
+									<select id="plan_start_time" class="form-control"
+										name="startTime">										
+										<option value="0000">오전 12:00</option>
 										<option value="0100">오전 1:00</option>
 										<option value="0200">오전 2:00</option>
 										<option value="0300">오전 3:00</option>
@@ -197,8 +165,42 @@
 										<option value="2000">오후 8:00</option>
 										<option value="2100">오후 9:00</option>
 										<option value="2200">오후 10:00</option>
-										<option value="2300">오후 11:00</option>										
+										<option value="2300">오후 11:00</option>
+										
+									</select> <select id="plan_end_time" class="form-control" name="endTime">										
+										<option value="0000">오전 12:00</option>
+										<option value="0100">오전 1:00</option>
+										<option value="0200">오전 2:00</option>
+										<option value="0300">오전 3:00</option>
+										<option value="0400">오전 4:00</option>
+										<option value="0500">오전 5:00</option>
+										<option value="0600">오전 6:00</option>
+										<option value="0700">오전 7:00</option>
+										<option value="0800">오전 8:00</option>
+										<option value="0900">오전 9:00</option>
+										<option value="1000">오전 10:00</option>
+										<option value="1100">오전 11:00</option>
+										<option value="1200">오후 12:00</option>
+										<option value="1300">오후 1:00</option>
+										<option value="1400">오후 2:00</option>
+										<option value="1500">오후 3:00</option>
+										<option value="1600">오후 4:00</option>
+										<option value="1700">오후 5:00</option>
+										<option value="1800">오후 6:00</option>
+										<option value="1900">오후 7:00</option>
+										<option value="2000">오후 8:00</option>
+										<option value="2100">오후 9:00</option>
+										<option value="2200">오후 10:00</option>
+										<option value="2300">오후 11:00</option>
 									</select>
+								</div>
+								<div class="timeChk">
+									<input type="checkbox" id="timeChk" name="timeChk" value="0001">
+									<label for="timeChk">종일</label>																	
+								</div>
+								<div class="timeCheked">
+									<span id="timeChked"><i class="fas fa-check-square fa-2x"></i></span>
+									<label for="timeChked">종일</label>			
 								</div>
 							</div>
 
@@ -207,9 +209,8 @@
 									<span class="input-group-text">메모</span>
 								</div>
 								<textarea id="plan_content" name="plan_content"
-									class="form-control"></textarea>									
+									class="form-control"></textarea>
 							</div>
-								<span style="margin-left:60px;" id="fontLength">(0/50)</span>	
 						</div>
 						<div class="modal-footer" id="plan_modal_footer">
 							<div class="btn-group btn-group-justified" role="group"
@@ -226,8 +227,10 @@
 					</div>
 				</div>
 			</div>
-		</form>		
-
+		</form>
+		<div>
+			<input type="hidden" id="error_code" value="${msg }" />
+		</div>
 		<!-- 컨테이너 -->
 	</div>
 </section>

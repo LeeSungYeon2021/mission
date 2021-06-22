@@ -25,10 +25,11 @@
 		PLAN_STATE = 'Y'
 		AND
 		(
-		PLAN_START_DATE LIKE '%'||#{searchDay}||'%'
+		SUBSTR(PLAN_START_DATE,1,8) = #{searchDay}
+
 		OR
-		PLAN_END_DATE
-		LIKE '%'||#{searchDay}||'%'
+
+		SUBSTR(PLAN_END_DATE,1,8) = #{searchDay}
 		)
 	</select>
 
@@ -84,12 +85,14 @@
 		PLAN_START_DATE <![CDATA[>=]]>
 		#{startDay} AND PLAN_START_DATE <![CDATA[<=]]>
 		#{endDay}
+		
 	</select>
 
 	<!-- 일별 카운트 조회 -->
 	<select id="planDayCount" resultType="java.util.HashMap"
 		parameterType="string">
 		SELECT TMP.DAYS AS DAYS,COUNT(*) AS CONTENT_COUNT
+		
 		FROM
 
 		(SELECT
@@ -147,11 +150,11 @@
 
 		WHERE
 		(
-		PLAN_START_DATE LIKE '%'||#{searchDay}||'%'
+		SUBSTR(PLAN_START_DATE,1,8) = #{searchDay}
 
 		OR
 
-		PLAN_END_DATE LIKE '%'||#{searchDay}||'%'
+		SUBSTR(PLAN_END_DATE,1,8) = #{searchDay}
 		)
 
 		ORDER BY PLAN_START_DATE ASC
@@ -164,7 +167,7 @@
 		PLAN_START_DATE = #{plan_start_date} ,
 		PLAN_END_DATE = #{plan_end_date} ,
 		PLAN_UPDATE_DATE =
-		TO_CHAR(SYSDATE,'YYYYMMDD HH24MI'),
+		TO_CHAR(SYSDATE,'YYYYMMDDHH24MISS'),
 		PLAN_TITLE = #{plan_title} ,
 		PLAN_CONTENT = #{plan_content},
 		PLAN_STATE = #{plan_state}

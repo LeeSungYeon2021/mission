@@ -17,7 +17,8 @@
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script src='//unpkg.com/popper.js@1/dist/umd/popper.min.js'></script>
-<script src='//unpkg.com/bootstrap@4/dist/js/bootstrap.min.js'></script>  
+<script src='//unpkg.com/bootstrap@4/dist/js/bootstrap.min.js'></script> 
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> 
 
 <!DOCTYPE html>
 <html>

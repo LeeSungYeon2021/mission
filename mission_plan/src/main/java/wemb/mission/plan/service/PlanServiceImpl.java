@@ -49,6 +49,7 @@ public class PlanServiceImpl implements PlanService {
 	@Override
 	public int planDelete(int no) {
 		// TODO Auto-generated method stub
+		System.out.println("들어왔니?");
 		return planDao.planDelete(no);
 	}
 

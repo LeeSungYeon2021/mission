@@ -5,8 +5,23 @@
 <link rel="stylesheet" type="text/css" href="/resources/css/index.css">
 
 <%@ include file="/WEB-INF/view/common/header.jsp"%>
+<style>
+	#gg input[type=checkbox]:checked {
+	color:red;
+	background-color:black;
+	}
+</style>
 <section>
 	<a style="font-size:30px; font-weight:bold;"href="/calendar">달력보기</a>
+	<input type="checkbox" id="gg">
 </section>
-
+<script>
+	/* $("#gg").click(function() {
+		if($("input[type=checkbox]:checked")) {
+			$("#gg").css('background-color','red');	
+		}
+		console.log('dfsdf?');
+		
+	}) */
+</script>
 <%@ include file="/WEB-INF/view/common/footer.jsp"%>

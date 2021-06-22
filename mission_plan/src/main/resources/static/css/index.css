@@ -14,6 +14,7 @@
 
 #currentYear {
 	font-weight: bold;
+	width:100%;
 }
 
 #currentMonth {
@@ -24,6 +25,9 @@
 	border: none;
 	width: 150px;
 	font-weight: bold;
+ 	/* table-layout:fixed;
+	word-break:break-all; */
+	padding-left:0; 
 }
 
 #tbl_plan>thead>tr>td>input {
@@ -71,11 +75,16 @@
 #plan_countAll {
 	font-weight: bold;
 }
-
+#planList_header {
+	border:none;
+}
 .modal-title {
 	font-weight: bold;
 }
-
+#planList_body {
+	margin:0px;
+	padding:0px;
+}
 .modal-body textarea {
 	border: 1px solid lightgray;
 	background-color: white;
@@ -136,9 +145,8 @@ span.listSpan {
 	overflow: hidden;
 	text-overflow: ellipsis;
 }
-#tbl_dayList > tbody >  tr > td {
-	white-space: nowrap;	
-	width: 140px;
+#tbl_dayList > tbody >  tr > td.list_title {
+	width:30px;
 	overflow: hidden;
 	text-overflow: ellipsis;
 }
@@ -149,4 +157,21 @@ span.listSpan {
 #planList_modal {
 	width:300px;
 	overflow-y:hidden;
+}
+
+span.input-group-text {
+	font-weight:bold;	
+}
+div.timeChk , .timeCheked {
+	
+	margin-top:25px;
+	margin-left:15px;
+	font-size:13px;
+}
+
+.tt {
+	background-color:#FFFFCC;
+}
+#tbl_plan > tbody > tr {
+	
 }
