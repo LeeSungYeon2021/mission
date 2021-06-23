@@ -14,7 +14,7 @@
 
 #currentYear {
 	font-weight: bold;
-	width:100%;
+	width: 100%;
 }
 
 #currentMonth {
@@ -25,9 +25,9 @@
 	border: none;
 	width: 150px;
 	font-weight: bold;
- 	/* table-layout:fixed;
+	/* table-layout:fixed;
 	word-break:break-all; */
-	padding-left:0; 
+	padding-left: 0;
 }
 
 #tbl_plan>thead>tr>td>input {
@@ -44,7 +44,7 @@
 
 #tbl_plan>tbody>tr>td {
 	width: 150px;
-	height:130px;
+	height: 130px;
 }
 
 #tbl_plan>tbody>tr>td:nth-child(n+7)>input {
@@ -75,16 +75,20 @@
 #plan_countAll {
 	font-weight: bold;
 }
+
 #planList_header {
-	border:none;
+	border: none;
 }
+
 .modal-title {
 	font-weight: bold;
 }
+
 #planList_body {
-	margin:0px;
-	padding:0px;
+	margin: 0px;
+	padding: 0px;
 }
+
 .modal-body textarea {
 	border: 1px solid lightgray;
 	background-color: white;
@@ -132,46 +136,55 @@
 span.dayCount {
 	text-align: right;
 	font-size: 10px;
-	margin-left: 60px; 
+	margin-left: 80px;
 }
 
 span.listSpan {
 	display: block;
 }
 
-.plan_title{
+.plan_title {
 	white-space: nowrap;
 	width: 140px;
 	overflow: hidden;
 	text-overflow: ellipsis;
+	margin-left: 20px;
 }
-#tbl_dayList > tbody >  tr > td.list_title {
-	width:30px;
+
+#tbl_dayList {
+	table-layout: fixed;
+}
+
+#tbl_dayList>tbody>tr>td.list_title {
+	width: 100px;
 	overflow: hidden;
 	text-overflow: ellipsis;
+	white-space: nowrap;
 }
+
+#tbl_dayList>tbody>tr>td.list_time {
+	width: 70px;
+}
+
 .tooltip-content {
-	background-color:lightgray;
-	color:white;
+	background-color: lightgray;
+	color: white;
 }
+
 #planList_modal {
-	width:300px;
-	overflow-y:hidden;
+	width: 300px;
+	overflow-y: hidden;
 }
-
+/* #planList_body {
+	overflow-y:scroll;
+	height:auto;
+} */
 span.input-group-text {
-	font-weight:bold;	
-}
-div.timeChk , .timeCheked {
-	
-	margin-top:25px;
-	margin-left:15px;
-	font-size:13px;
+	font-weight: bold;
 }
 
-.tt {
-	background-color:#FFFFCC;
-}
-#tbl_plan > tbody > tr {
-	
+div.timeChk, .timeCheked {
+	margin-top: 25px;
+	margin-left: 15px;
+	font-size: 13px;
 }

@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import wemb.mission.plan.dao.PlanDao;
 import wemb.mission.plan.vo.Plan;
-import wemb.mission.plan.vo.PlanCount;
 
 @Service
 public class PlanServiceImpl implements PlanService {
@@ -54,9 +53,9 @@ public class PlanServiceImpl implements PlanService {
 	}
 
 	@Override
-	public int planState(String searchDay) {
+	public List<Map<String, Object>> planState(String searchDay,String startDay,String endDay) {
 		// TODO Auto-generated method stub
-		return planDao.planState(searchDay);
+		return planDao.planState(searchDay,startDay,endDay);
 	}
 
 	@Override

@@ -10,6 +10,7 @@
 
 <!-- 폰트어썸 (아이콘) -->
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css">
+<link rel="stylesheet" type="text/css" href="/resources/css/common/header.css">
 
 <!-- 부트스트랩 / JQUERY -->
 <link rel="stylesheet" href="//unpkg.com/bootstrap@4/dist/css/bootstrap.min.css">
@@ -19,6 +20,10 @@
 <script src='//unpkg.com/popper.js@1/dist/umd/popper.min.js'></script>
 <script src='//unpkg.com/bootstrap@4/dist/js/bootstrap.min.js'></script> 
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> 
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Jua&family=Sunflower:wght@300&display=swap" rel="stylesheet">
 
 <!DOCTYPE html>
 <html>

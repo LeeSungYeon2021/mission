@@ -25,13 +25,13 @@ public class PlanController {
 
 	@Autowired
 	private PlanService planService;
-	
+
 	@RequestMapping(value = "/idx")
 	public String index() {
 
 		return "/index";
 	}
-	
+
 	@RequestMapping(value = "/calendar")
 	public String calendar(String msg) {
 
@@ -42,23 +42,21 @@ public class PlanController {
 	@RequestMapping(value = "/plan_count", method = RequestMethod.POST)
 	@ResponseBody
 	public ResponseEntity<List<Map<String, Object>>> planCount(String startDay, String endDay) {
-		
+
 		int monthCount = 0;
 		List<Map<String, Object>> list = null;
 		Map<String, Object> map = new HashMap();
 		try {
 			monthCount = planService.planMonthCount(startDay, endDay);
 			list = planService.planDayCount(startDay, endDay);
-			
-			if(list.size() != 0 && monthCount != 0) {
-				map.put("monthCount", monthCount);
-				list.add(map);
-			}
-			
-			return new ResponseEntity<List<Map<String, Object>>>(list,HttpStatus.OK);
-		}catch(Exception e) {
+
+			map.put("monthCount", monthCount);
+			list.add(map);
+
+			return new ResponseEntity<List<Map<String, Object>>>(list, HttpStatus.OK);
+		} catch (Exception e) {
 			log.error("count error : {} ", e.getMessage());
-			return new ResponseEntity<List<Map<String, Object>>>(list,HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<List<Map<String, Object>>>(list, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
@@ -105,7 +103,7 @@ public class PlanController {
 			int result = planService.planInsert(plan);
 			if (result <= 0) {
 				throw new Exception("enroll result = 0 예외처리");
-			} else {				
+			} else {
 				redirectAttr.addFlashAttribute("msg", "enrollsuccess");
 			}
 
@@ -120,8 +118,8 @@ public class PlanController {
 
 	// 일정 수정
 	@RequestMapping(value = "/plan_edit", method = RequestMethod.POST)
-	public String planUpdate(Plan plan, String startTime, String endTime,String timeChk, RedirectAttributes redirectAttr) {
-
+	public String planUpdate(Plan plan, String startTime, String endTime, String timeChk,
+			RedirectAttributes redirectAttr) {
 
 		// 시작시간 Plus
 		String startRe = "";
@@ -146,7 +144,7 @@ public class PlanController {
 			if (result <= 0) {
 				throw new Exception("update result = 0 예외처리");
 			} else {
-				
+
 				redirectAttr.addFlashAttribute("msg", "updatesuccess");
 			}
 
@@ -188,28 +186,29 @@ public class PlanController {
 	public ResponseEntity<Plan> planEnroll(int no) {
 		Plan plan = null;
 		try {
-			plan = planService.planView(no);			
+			plan = planService.planView(no);
 			return new ResponseEntity<Plan>(plan, HttpStatus.OK);
 		} catch (Exception e) {
-			log.error("viewDetail error : {} ",e.getMessage());
+			log.error("viewDetail error : {} ", e.getMessage());
 			return new ResponseEntity<Plan>(plan, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
 	// 일정 상태값 조회
 	@RequestMapping(value = "/plan_state", method = RequestMethod.POST)
-	public ResponseEntity<Integer> planStateSearch(String searchDay) {
-
-		int result = 0;
-
+	public ResponseEntity<List<Map<String, Object>>> planStateSearch(String searchDay,String startDay,String endDay) {
+		
+		List<Map<String, Object>> list = null;		
 		try {
-			result = planService.planState(searchDay);
-
-			return new ResponseEntity<Integer>(result, HttpStatus.OK);
+			list = planService.planState(searchDay,startDay,endDay);
+			for(int i=0;i<list.size();i++) {
+				log.info("list : {} ",list.get(i));
+			}
+			return new ResponseEntity<List<Map<String, Object>>>(list, HttpStatus.OK);
 
 		} catch (Exception e) {
 			log.error("state count error : {} ", e.getMessage());
-			return new ResponseEntity<Integer>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<List<Map<String, Object>>>(list, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 

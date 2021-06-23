@@ -15,22 +15,41 @@
 	</insert>
 
 	<!-- 일정 상태 카운트 조회 -->
-	<select id="planState" resultType="_int" parameterType="string">
-		SELECT
-		COUNT(*) AS STATE_COUNT
-		FROM TB_PLAN
+	<select id="planState" resultType="java.util.HashMap" parameterType="string">
+		<!-- SELECT COUNT(*) AS STATE_COUNT FROM TB_PLAN WHERE PLAN_STATE = 'Y' 
+			AND ( SUBSTR(PLAN_START_DATE,1,8) = #{searchDay} OR SUBSTR(PLAN_END_DATE,1,8) 
+			= #{searchDay} ) -->
 
-		WHERE
 
-		PLAN_STATE = 'Y'
-		AND
+
+
+		SELECT TP.* FROM
 		(
-		SUBSTR(PLAN_START_DATE,1,8) = #{searchDay}
-
-		OR
-
-		SUBSTR(PLAN_END_DATE,1,8) = #{searchDay}
-		)
+		SELECT 
+		SUBSTR(PLAN_START_DATE,1,8) AS PLAN_START_DATE,
+		SUBSTR(PLAN_END_DATE,1,8) AS PLAN_END_DATE,
+		COUNT(*) AS STATE_COUNT 
+		FROM 
+		TB_PLAN 
+		
+		WHERE 
+		(
+		
+		SUBSTR(PLAN_START_DATE,1,8) >= #{startDay}
+		
+		AND 
+		
+		SUBSTR(PLAN_END_DATE,1,8) <![CDATA[<=]]> #{endDay})
+		
+		AND 
+		 
+		PLAN_STATE='Y' 
+		 
+		GROUP BY PLAN_START_DATE,PLAN_END_DATE) TP
+		
+		WHERE
+		
+		(TP.PLAN_START_DATE = #{searchDay} OR TP.PLAN_END_DATE =  #{searchDay})
 	</select>
 
 	<!-- 해당 월 일정 조회 -->
@@ -38,17 +57,21 @@
 		parameterType="string">
 
 		SELECT
-		TP.PLAN_ENROLL_DATE,
-		TP.PLAN_START_DATE,
-		TP.PLAN_END_DATE,
-		TP.PLAN_NO,
-		TP.PLAN_TITLE,
-		TP.PLAN_STATE,
-		TMP.DAYS,
-		RANK() OVER(PARTITION BY TMP.DAYS ORDER BY PLAN_STATE DESC,PLAN_ENROLL_DATE)
+		TP.PLAN_ENROLL_DATE AS PLAN_ENROLL_DATE,
+		TP.PLAN_START_DATE AS
+		PLAN_START_DATE,
+		TP.PLAN_END_DATE AS PLAN_END_DATE,
+		TP.PLAN_NO AS
+		PLAN_NO,
+		TP.PLAN_TITLE AS PLAN_TITLE,
+		TP.PLAN_STATE AS PLAN_STATE,
+		TMP.DAYS AS DAYS,
+		RANK() OVER(PARTITION BY TMP.DAYS ORDER BY PLAN_STATE
+		DESC,PLAN_ENROLL_DATE)
 		AS DAY_RANK
 		FROM
-		(SELECT TO_CHAR(TO_DATE(#{startDay},'YYYYMMDD')+LEVEL-1,'YYYYMMDD') AS DAYS
+		(SELECT
+		TO_CHAR(TO_DATE(#{startDay},'YYYYMMDD')+LEVEL-1,'YYYYMMDD') AS DAYS
 		FROM DUAL CONNECT BY LEVEL <![CDATA[<=]]>
 		TO_DATE(#{endDay}, 'YYYYMMDD') - TO_DATE(#{startDay},'YYYYMMDD')+1)TMP
 		,
@@ -56,7 +79,8 @@
 
 		WHERE
 
-		(TMP.DAYS = SUBSTR(TP.PLAN_START_DATE,1,8) OR TMP.DAYS =
+		(TMP.DAYS = SUBSTR(TP.PLAN_START_DATE,1,8) OR TMP.DAYS
+		=
 		SUBSTR(TP.PLAN_END_DATE,1,8))
 
 		GROUP BY
@@ -85,18 +109,22 @@
 		PLAN_START_DATE <![CDATA[>=]]>
 		#{startDay} AND PLAN_START_DATE <![CDATA[<=]]>
 		#{endDay}
-		
+
 	</select>
 
 	<!-- 일별 카운트 조회 -->
 	<select id="planDayCount" resultType="java.util.HashMap"
 		parameterType="string">
-		SELECT TMP.DAYS AS DAYS,COUNT(*) AS CONTENT_COUNT
-		
+		SELECT
+
+		TMP.DAYS AS DAYS,
+		COUNT(*) AS CONTENT_COUNT
+
 		FROM
 
 		(SELECT
-		TO_CHAR(TO_DATE(#{startDay},'YYYYMMDD')+LEVEL-1,'YYYYMMDD') AS DAYS
+		TO_CHAR(TO_DATE(#{startDay},'YYYYMMDD')+LEVEL-1,'YYYYMMDD') AS
+		DAYS
 
 		FROM DUAL
 		CONNECT BY LEVEL <![CDATA[<=]]>
@@ -109,7 +137,8 @@
 
 		OR
 
-		TMP.DAYS = SUBSTR(TP.plan_END_date,1,8)
+		TMP.DAYS =
+		SUBSTR(TP.plan_END_date,1,8)
 		GROUP BY TMP.DAYS
 		ORDER BY DAYS
 	</select>
@@ -119,16 +148,20 @@
 		resultType="wemb.mission.plan.vo.Plan">
 		SELECT
 
-		PLAN_NO,
+		PLAN_NO AS PLAN_NO,
+		PLAN_ENROLL_DATE AS
 		PLAN_ENROLL_DATE,
-		PLAN_START_DATE,
+		PLAN_START_DATE AS PLAN_START_DATE,
+		PLAN_END_DATE AS
 		PLAN_END_DATE,
-		PLAN_UPDATE_DATE,
+		PLAN_UPDATE_DATE AS PLAN_UPDATE_DATE,
+		PLAN_TITLE AS
 		PLAN_TITLE,
-		PLAN_CONTENT,
-		PLAN_STATE
+		PLAN_CONTENT AS PLAN_CONTENT,
+		PLAN_STATE AS PLAN_STATE
 
-		FROM TB_PLAN
+		FROM
+		TB_PLAN
 
 		WHERE PLAN_NO = #{no}
 	</select>
@@ -138,14 +171,18 @@
 		resultType="wemb.mission.plan.vo.Plan">
 		SELECT
 
-		PLAN_NO,
+		PLAN_NO AS PLAN_NO,
+		PLAN_ENROLL_DATE AS
 		PLAN_ENROLL_DATE,
-		PLAN_START_DATE,
+		PLAN_START_DATE AS PLAN_START_DATE,
+		PLAN_END_DATE AS
 		PLAN_END_DATE,
-		PLAN_UPDATE_DATE,
+		PLAN_UPDATE_DATE AS PLAN_UPDATE_DATE,
+		PLAN_TITLE AS
 		PLAN_TITLE,
-		PLAN_CONTENT,
-		PLAN_STATE
+		PLAN_CONTENT AS PLAN_CONTENT,
+		PLAN_STATE AS PLAN_STATE
+
 		FROM TB_PLAN
 
 		WHERE
@@ -172,7 +209,8 @@
 		PLAN_CONTENT = #{plan_content},
 		PLAN_STATE = #{plan_state}
 
-		WHERE PLAN_NO = #{plan_no}
+		WHERE PLAN_NO
+		= #{plan_no}
 	</update>
 
 	<!-- 일정 삭제 -->

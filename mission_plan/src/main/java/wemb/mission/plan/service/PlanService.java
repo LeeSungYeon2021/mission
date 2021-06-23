@@ -23,7 +23,7 @@ public interface PlanService {
 	//일정 삭제
 	int planDelete(int no) ;
 	//일정 중요도 카운트
-	int planState(String searchDay);
+	List<Map<String, Object>> planState(String searchDay,String startDay,String endDay);
 	//일별 일정 리스트 조회
 	List<Plan> planDayList(String searchDay);
 }

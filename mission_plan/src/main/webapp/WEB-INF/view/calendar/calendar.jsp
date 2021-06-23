@@ -78,7 +78,7 @@
 		<!-- 일정 modal -->
 		<form action="/plan_enroll" id="plan_form" method="post">
 			<div class="modal" id="plan_modal" tabindex="-1" role="dialog">
-				<div class="modal-dialog" role="document">
+				<div class="modal-dialog modal-dialog-centered" role="document">
 					<div class="modal-content">
 						<div class="modal-header" id="plan_modal_header">
 							<h5 class="modal-title">일정 등록</h5>
@@ -229,7 +229,7 @@
 			</div>
 		</form>
 		<div>
-			<input type="hidden" id="error_code" value="${msg }" />
+			<input type="hidden" id="error_code" value="${msg }" />			
 		</div>
 		<!-- 컨테이너 -->
 	</div>
