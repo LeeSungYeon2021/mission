@@ -6,14 +6,11 @@
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
 <%@ include file="/WEB-INF/view/common/header.jsp"%>
-<section style="">
-	<div class="container">
-		<div class="tbl_div">
-			<!-- 달력 tbl -->
-			<table class="table " id="tbl_plan">
 
-				<thead>
-					<tr align='right'>
+<section>
+	<table class="table" id="tbl_plan">
+		<thead>		
+			<tr align='right'>
 						<td></td>
 						<td>
 							<button type="button" id="prevBtn">
@@ -28,7 +25,7 @@
 							</button>
 						</td>
 					</tr>
-
+					
 					<tr>
 
 						<td></td>
@@ -40,25 +37,64 @@
 						<td><span id="plan_monthCount"></span></td>
 
 					</tr>
-					<tr class="tt">
-						<td style="color: red;">일</td>
-						<td>월</td>
-						<td>화</td>
-						<td>수</td>
-						<td>목</td>
-						<td>금</td>
-						<td style="color: blue;">토</td>
+					<tr>	
+						<th>sun</th>
+						<th>mon</th>
+						<th>the</th>
+						<th>wed</th>
+						<th>thu</th>
+						<th>fri</th>
+						<th>sat</th>
 					</tr>
-				</thead>
-
-				<tbody>
-
-				</tbody>
-			</table>
-
-		</div>
-
-		<!-- 일정 리스트 modal -->
+		</thead>		
+		<tbody>
+			<c:forEach items="${list }" var="list" varStatus="str">
+				
+					<tr>
+						<td data-day="${list.date}${list.sun }">
+							<input class="inputDay" type="text" value="${list.sun }"readonly/>
+							<span class="dayCount" readonly></span>
+							<ul class="list-group ulDay"></ul>
+						</td>
+						<td data-day="${list.date}${list.mon }">
+							<input class="inputDay" type="text" value="${list.mon }" readonly/>
+							<span class="dayCount" readonly></span>
+							<ul class="list-group ulDay"></ul>
+						</td>
+						<td data-day="${list.date}${list.the }">
+							<input class="inputDay" type="text" value="${list.the }" readonly/>
+							<span class="dayCount" readonly></span>
+							<ul class="list-group ulDay"></ul>
+						</td>
+						<td data-day="${list.date}${list.wed }">
+							<input class="inputDay" type="text" value="${list.wed }" readonly/>
+							<span class="dayCount" readonly></span>
+							<ul class="list-group ulDay"></ul>
+						</td>
+						<td data-day="${list.date}${list.thu }">
+							<input class="inputDay" type="text" value="${list.thu }" readonly/>
+							<span class="dayCount" readonly></span>
+							<ul class="list-group ulDay"></ul>
+						</td>
+						<td data-day="${list.date}${list.fri }">
+							<input class="inputDay" type="text" value="${list.fri }" readonly/>
+							<span class="dayCount" readonly></span>
+							<ul class="list-group ulDay"></ul>
+						</td>
+						<td data-day="${list.date}${list.sat }">
+							<input class="inputDay" type="text" value="${list.sat }"readonly/>
+							<span class="dayCount" readonly></span>
+							<ul class="list-group ulDay"></ul>
+						</td>						
+					</tr>
+					
+					
+								
+			</c:forEach>			
+		</tbody>		
+	</table>
+	
+	<!-- 일정 리스트 modal -->
 		<div class="modal" id="planList_modal" tabindex="-1" role="dialog">
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
@@ -234,10 +270,9 @@
 		</form>
 		<div>
 			<input type="hidden" id="error_code" value="${msg }" />			
-		</div>
-		<!-- 컨테이너 -->
-	</div>
+		</div>		
 </section>
 
 <%@ include file="/WEB-INF/view/common/footer.jsp"%>
+<script src="/resources/js/cal.js"></script>
 <script src="/resources/js/calendar.js"></script>

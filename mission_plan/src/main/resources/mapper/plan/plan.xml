@@ -15,41 +15,32 @@
 	</insert>
 
 	<!-- 일정 상태 카운트 조회 -->
-	<select id="planState" resultType="java.util.HashMap" parameterType="string">
-		<!-- SELECT COUNT(*) AS STATE_COUNT FROM TB_PLAN WHERE PLAN_STATE = 'Y' 
-			AND ( SUBSTR(PLAN_START_DATE,1,8) = #{searchDay} OR SUBSTR(PLAN_END_DATE,1,8) 
-			= #{searchDay} ) -->
+	<select id="planState" resultType="java.util.HashMap"
+		parameterType="string">
+		SELECT
+
+		TMP.DAYS AS DAYS,
+		COUNT(*) AS STATE_COUNT
 
 
+		FROM
+		( SELECT
+		TO_CHAR(TO_DATE(#{startDay},'YYYYMMDD')+LEVEL-1,'YYYYMMDD') AS DAYS
+		FROM DUAL CONNECT BY LEVEL <![CDATA[<=]]>
+		TO_DATE(#{endDay}, 'YYYYMMDD') - TO_DATE(#{startDay},'YYYYMMDD')+1)TMP
+		,
+		TB_PLAN TP
 
-
-		SELECT TP.* FROM
-		(
-		SELECT 
-		SUBSTR(PLAN_START_DATE,1,8) AS PLAN_START_DATE,
-		SUBSTR(PLAN_END_DATE,1,8) AS PLAN_END_DATE,
-		COUNT(*) AS STATE_COUNT 
-		FROM 
-		TB_PLAN 
-		
-		WHERE 
-		(
-		
-		SUBSTR(PLAN_START_DATE,1,8) >= #{startDay}
-		
-		AND 
-		
-		SUBSTR(PLAN_END_DATE,1,8) <![CDATA[<=]]> #{endDay})
-		
-		AND 
-		 
-		PLAN_STATE='Y' 
-		 
-		GROUP BY PLAN_START_DATE,PLAN_END_DATE) TP
-		
 		WHERE
-		
-		(TP.PLAN_START_DATE = #{searchDay} OR TP.PLAN_END_DATE =  #{searchDay})
+
+		(
+		TMP.DAYS = SUBSTR(TP.PLAN_START_DATE,1,8)
+
+		OR
+		TMP.DAYS = SUBSTR(TP.PLAN_END_DATE,1,8)
+		)
+		AND PLAN_STATE ='Y'
+		GROUP BY TMP.DAYS
 	</select>
 
 	<!-- 해당 월 일정 조회 -->
@@ -144,19 +135,16 @@
 	</select>
 
 	<!-- 일정 상세보기 -->
-	<select id="planView" parameterType="_int"
+	<select id="planView" parameterType="int"
 		resultType="wemb.mission.plan.vo.Plan">
 		SELECT
-
+		
 		PLAN_NO AS PLAN_NO,
-		PLAN_ENROLL_DATE AS
-		PLAN_ENROLL_DATE,
+		PLAN_ENROLL_DATE AS PLAN_ENROLL_DATE,		
 		PLAN_START_DATE AS PLAN_START_DATE,
-		PLAN_END_DATE AS
-		PLAN_END_DATE,
+		PLAN_END_DATE AS PLAN_END_DATE,		
 		PLAN_UPDATE_DATE AS PLAN_UPDATE_DATE,
-		PLAN_TITLE AS
-		PLAN_TITLE,
+		PLAN_TITLE AS PLAN_TITLE,		
 		PLAN_CONTENT AS PLAN_CONTENT,
 		PLAN_STATE AS PLAN_STATE
 
@@ -183,7 +171,8 @@
 		PLAN_CONTENT AS PLAN_CONTENT,
 		PLAN_STATE AS PLAN_STATE
 
-		FROM TB_PLAN
+		FROM
+		TB_PLAN
 
 		WHERE
 		(
@@ -218,4 +207,19 @@
 		DELETE FROM TB_PLAN WHERE
 		PLAN_NO = #{plan_no}
 	</delete>
+	
+	
+	<select id="planCal" parameterType="string" resultType="wemb.mission.plan.vo.PlanCal">
+	SELECT MIN (DECODE (TO_CHAR (YM + LEVEL - 1, 'D'), '1', LEVEL)) sun
+	,MIN (DECODE (TO_CHAR (YM + LEVEL - 1, 'D'), '2', LEVEL)) mon
+	, MIN (DECODE (TO_CHAR (YM + LEVEL - 1, 'D'), '3', LEVEL)) the
+	, MIN (DECODE (TO_CHAR (YM + LEVEL - 1, 'D'), '4', LEVEL)) wed
+	, MIN (DECODE (TO_CHAR (YM + LEVEL - 1, 'D'), '5', LEVEL)) thu
+	, MIN (DECODE (TO_CHAR (YM + LEVEL - 1, 'D'), '6', LEVEL)) fri
+	, MIN (DECODE (TO_CHAR (YM + LEVEL - 1, 'D'), '7', LEVEL)) sat
+	FROM (SELECT TO_DATE(#{day},'YYYYMM') YM FROM DUAL)
+	CONNECT BY LEVEL <![CDATA[<=]]> LAST_DAY (YM) - YM + 1
+	GROUP BY TRUNC (YM + LEVEL, 'IW')
+	ORDER BY sat 
+	</select>
 </mapper>

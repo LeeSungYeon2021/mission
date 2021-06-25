@@ -13,10 +13,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import wemb.mission.plan.service.PlanService;
 import wemb.mission.plan.vo.Plan;
+import wemb.mission.plan.vo.PlanCal;
 
 @Controller
 public class PlanController {
@@ -26,16 +28,21 @@ public class PlanController {
 	@Autowired
 	private PlanService planService;
 
-	@RequestMapping(value = "/idx")
-	public String index() {
-
-		return "/index";
+	@RequestMapping(value = "/cal")
+	public ModelAndView cal(ModelAndView mv,String day) {
+		
+		List<PlanCal> list = planService.planCal(day);		
+		mv.addObject("list", list);
+		mv.setViewName("/calendar/cal");		
+		return mv;
 	}
 
 	@RequestMapping(value = "/calendar")
 	public String calendar(String msg) {
 
 		return "/calendar/calendar";
+		
+		
 	}
 
 	// 일별,달별 카운트
@@ -113,7 +120,7 @@ public class PlanController {
 			redirectAttr.addFlashAttribute("msg", "enrollfail");
 		}
 
-		return "redirect:/calendar";
+		return "redirect:/cal";
 	}
 
 	// 일정 수정
@@ -181,12 +188,12 @@ public class PlanController {
 	}
 
 	// 일정 상세보기
-	@RequestMapping(value = "/plan_viewDetail", method = RequestMethod.POST)
-	@ResponseBody
+	@RequestMapping(value = "/plan_viewDetail", method = RequestMethod.POST)	
 	public ResponseEntity<Plan> planEnroll(int no) {
-		Plan plan = null;
+		Plan plan = new Plan();		
 		try {
 			plan = planService.planView(no);
+
 			return new ResponseEntity<Plan>(plan, HttpStatus.OK);
 		} catch (Exception e) {
 			log.error("viewDetail error : {} ", e.getMessage());
@@ -196,14 +203,12 @@ public class PlanController {
 
 	// 일정 상태값 조회
 	@RequestMapping(value = "/plan_state", method = RequestMethod.POST)
-	public ResponseEntity<List<Map<String, Object>>> planStateSearch(String searchDay,String startDay,String endDay) {
+	public ResponseEntity<List<Map<String, Object>>> planStateSearch(String startDay,String endDay) {
 		
 		List<Map<String, Object>> list = null;		
 		try {
-			list = planService.planState(searchDay,startDay,endDay);
-			for(int i=0;i<list.size();i++) {
-				log.info("list : {} ",list.get(i));
-			}
+			list = planService.planState(startDay,endDay);
+
 			return new ResponseEntity<List<Map<String, Object>>>(list, HttpStatus.OK);
 
 		} catch (Exception e) {

@@ -12,12 +12,4 @@ public class MainController {
 
 		return "index";
 	}
-	
-	@RequestMapping(value = "/test")
-	public String test() {
-
-		return "test";
-	}
-	
-
 }
